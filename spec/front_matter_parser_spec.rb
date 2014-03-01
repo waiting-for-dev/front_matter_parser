@@ -17,5 +17,15 @@ describe FrontMatterParser do
         expect(parsed.content).to eq('')
       end
     end
+
+    context "when an empty front matter is supplied" do
+      let(:parsed) { FrontMatterParser.parse(%Q(
+                                             Hello
+                                            )) }
+
+      it "returns an empty hash as front matter" do
+        expect(parsed.front_matter).to eq({})
+      end
+    end
   end
 end
