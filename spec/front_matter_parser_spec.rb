@@ -5,7 +5,12 @@ describe FrontMatterParser do
     expect(FrontMatterParser::VERSION).to_not be_nil
   end
 
-  it 'should do something useful' do
-    false.should be_true
+  describe "#parse" do
+    context "when an empty string is supplied" do
+      it "returns a Parsed instance with an empty hash as front_matter" do
+        parsed = FrontMatterParser.parse('')
+        expect(parsed.front_matter).to eq({})
+      end
+    end
   end
 end
