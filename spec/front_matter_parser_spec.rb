@@ -19,12 +19,15 @@ describe FrontMatterParser do
     end
 
     context "when an empty front matter is supplied" do
-      let(:parsed) { FrontMatterParser.parse(%Q(
-                                             Hello
-                                            )) }
+      let(:string) { %Q(Hello) }
+      let(:parsed) { FrontMatterParser.parse(string) }
 
       it "returns an empty hash as front matter" do
         expect(parsed.front_matter).to eq({})
+      end
+
+      it "returns the whole string as content" do
+        expect(parsed.content).to eq(string)
       end
     end
   end
