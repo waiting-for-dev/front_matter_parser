@@ -7,13 +7,13 @@ describe FrontMatterParser do
 
   describe "#parse" do
     context "when an empty string is supplied" do
+      let(:parsed) { FrontMatterParser.parse('') }
+
       it "returns a Parsed instance with an empty hash as front_matter" do
-        parsed = FrontMatterParser.parse('')
         expect(parsed.front_matter).to eq({})
       end
 
       it "returns a Parsed instance with an empty string as content" do
-        parsed = FrontMatterParser.parse('')
         expect(parsed.content).to eq('')
       end
     end
