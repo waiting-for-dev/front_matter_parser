@@ -11,6 +11,11 @@ describe FrontMatterParser do
         parsed = FrontMatterParser.parse('')
         expect(parsed.front_matter).to eq({})
       end
+
+      it "returns a Parsed instance with an empty string as content" do
+        parsed = FrontMatterParser.parse('')
+        expect(parsed.content).to eq('')
+      end
     end
   end
 end

@@ -1,3 +1,3 @@
 class FrontMatterParser::Parsed
-  attr_accessor :front_matter
+  attr_accessor :front_matter, :content
 end
