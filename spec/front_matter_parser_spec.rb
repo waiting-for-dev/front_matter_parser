@@ -9,11 +9,11 @@ describe FrontMatterParser do
     context "when an empty string is supplied" do
       let(:parsed) { FrontMatterParser.parse('') }
 
-      it "returns a Parsed instance with an empty hash as front_matter" do
+      it "the parsed front matter is an empty hash" do
         expect(parsed.front_matter).to eq({})
       end
 
-      it "returns a Parsed instance with an empty string as content" do
+      it "the parsed content is an empty string" do
         expect(parsed.content).to eq('')
       end
     end
@@ -22,11 +22,11 @@ describe FrontMatterParser do
       let(:string) { %Q(Hello) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "returns an empty hash as front matter" do
+      it "the parsed front matter is an empty hash" do
         expect(parsed.front_matter).to eq({})
       end
 
-      it "returns the whole string as content" do
+      it "the parsed content is the whole string" do
         expect(parsed.content).to eq(string)
       end
     end
