@@ -66,7 +66,7 @@ Content
       end
     end
 
-    context "when front matter is commented" do
+    context "when each line of the front matter has a line comment" do
       let(:string) { %Q(
 #---
 #title: hello
@@ -75,6 +75,27 @@ Content
 ) }
 
       let(:parsed) { FrontMatterParser.parse(string, '#') }
+
+      it "strips the comments and parses the front matter as a hash" do
+        expect(parsed.front_matter).to eq({'title' => 'hello'})
+      end
+
+      it "parses the content as a string" do
+        expect(parsed.content).to eq("Content\n")
+      end
+    end
+
+    context "when the front matter is between a multiline comment" do
+      let(:string) { %Q(
+<!--
+---
+title: hello
+---
+-->
+Content
+) }
+
+      let(:parsed) { FrontMatterParser.parse(string, '', '<!--', '-->') }
 
       it "strips the comments and parses the front matter as a hash" do
         expect(parsed.front_matter).to eq({'title' => 'hello'})
