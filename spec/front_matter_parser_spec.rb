@@ -65,5 +65,24 @@ Content
         expect(parsed.content).to eq("Content\n")
       end
     end
+
+    context "when front matter is commented" do
+      let(:string) { %Q(
+#---
+#title: hello
+#---
+Content
+) }
+
+      let(:parsed) { FrontMatterParser.parse(string, '#') }
+
+      it "strips the comments and parse the front matter" do
+        expect(parsed.front_matter).to eq({'title' => 'hello'})
+      end
+
+      it "parses the content" do
+        expect(parsed.content).to eq("Content\n")
+      end
+    end
   end
 end
