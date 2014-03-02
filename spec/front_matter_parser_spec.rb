@@ -86,14 +86,14 @@ Content
     end
 
     context "when the front matter is between a multiline comment" do
-      let(:string) { %Q(
+      let(:string) { '
 <!--
 ---
 title: hello
 ---
 -->
 Content
-) }
+' }
 
       let(:parsed) { FrontMatterParser.parse(string, '', '<!--', '-->') }
 
