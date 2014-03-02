@@ -42,6 +42,10 @@ title: hello
       it "the front matter is parsed" do
         expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
+
+      it "the content is an empty string" do
+        expect(parsed.content).to eq('')
+      end
     end
   end
 end
