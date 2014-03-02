@@ -30,5 +30,18 @@ describe FrontMatterParser do
         expect(parsed.content).to eq(string)
       end
     end
+
+    context "when the string only has front matter" do
+      let(:string) { %Q(
+---
+title: hello
+---
+) }
+      let(:parsed) { FrontMatterParser.parse(string) }
+
+      it "the front matter is parsed" do
+        expect(parsed.front_matter).to eq({'title' => 'hello'})
+      end
+    end
   end
 end
