@@ -9,11 +9,11 @@ describe FrontMatterParser do
     context "when an empty string is supplied" do
       let(:parsed) { FrontMatterParser.parse('') }
 
-      it "the parsed front matter is an empty hash" do
+      it "parses the front matter as an empty hash" do
         expect(parsed.front_matter).to eq({})
       end
 
-      it "the parsed content is an empty string" do
+      it  "parses the content as an empty string" do
         expect(parsed.content).to eq('')
       end
     end
@@ -22,11 +22,11 @@ describe FrontMatterParser do
       let(:string) { %Q(Hello) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "the parsed front matter is an empty hash" do
+      it "parses the front matter as an empty hash" do
         expect(parsed.front_matter).to eq({})
       end
 
-      it "the parsed content is the whole string" do
+      it "parses the content as the whole string" do
         expect(parsed.content).to eq(string)
       end
     end
@@ -39,11 +39,11 @@ title: hello
 ) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "the front matter is parsed" do
+      it "parses the front matter as a hash" do
         expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
 
-      it "the content is an empty string" do
+      it "parsed the content as an empty string" do
         expect(parsed.content).to eq('')
       end
     end
@@ -57,11 +57,11 @@ Content
 ) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "the front matter is parsed" do
+      it "parsed the front matter as a hash" do
         expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
 
-      it "the content is parsed" do
+      it "parses the content as a string" do
         expect(parsed.content).to eq("Content\n")
       end
     end
@@ -76,11 +76,11 @@ Content
 
       let(:parsed) { FrontMatterParser.parse(string, '#') }
 
-      it "strips the comments and parse the front matter" do
+      it "strips the comments and parses the front matter as a hash" do
         expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
 
-      it "parses the content" do
+      it "parses the content as a string" do
         expect(parsed.content).to eq("Content\n")
       end
     end
