@@ -67,21 +67,42 @@ Content
     end
 
     context "when each line of the front matter has a line comment" do
-      let(:string) { %Q(
+      context "when there is no space between the comment and the rest of the front matter line" do
+        let(:string) { %Q(
 #---
 #title: hello
 #---
 Content
 ) }
 
-      let(:parsed) { FrontMatterParser.parse(string, '#') }
+        let(:parsed) { FrontMatterParser.parse(string, '#') }
 
-      it "strips the comments and parses the front matter as a hash" do
-        expect(parsed.front_matter).to eq({'title' => 'hello'})
+        it "strips the comments and parses the front matter as a hash" do
+          expect(parsed.front_matter).to eq({'title' => 'hello'})
+        end
+
+        it "parses the content as a string" do
+          expect(parsed.content).to eq("Content\n")
+        end
       end
 
-      it "parses the content as a string" do
-        expect(parsed.content).to eq("Content\n")
+      context "when there is space between the comment and the rest of the front matter line" do
+        let(:string) { %Q(
+#  ---
+#  title: hello
+#  ---
+Content
+) }
+
+        let(:parsed) { FrontMatterParser.parse(string, '#') }
+
+        it "strips the comments and the white spaces and parses the front matter as a hash" do
+          expect(parsed.front_matter).to eq({'title' => 'hello'})
+        end
+
+        it "parses the content as a string" do
+          expect(parsed.content).to eq("Content\n")
+        end
       end
     end
 
