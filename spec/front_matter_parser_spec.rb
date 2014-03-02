@@ -47,5 +47,23 @@ title: hello
         expect(parsed.content).to eq('')
       end
     end
+
+    context "when the string has both front matter and content" do
+      let(:string) { %Q(
+---
+title: hello
+---
+Content
+) }
+      let(:parsed) { FrontMatterParser.parse(string) }
+
+      it "the front matter is parsed" do
+        expect(parsed.front_matter).to eq({'title' => 'hello'})
+      end
+
+      it "the content is parsed" do
+        expect(parsed.content).to eq("Content\n")
+      end
+    end
   end
 end
