@@ -6,28 +6,21 @@ describe FrontMatterParser do
   end
 
   describe "#parse" do
-    context "when an empty string is supplied" do
-      let(:parsed) { FrontMatterParser.parse('') }
-
-      it "parses the front matter as an empty hash" do
-        expect(parsed.front_matter).to eq({})
-      end
-
-      it  "parses the content as an empty string" do
-        expect(parsed.content).to eq('')
-      end
-    end
-
-    context "when an empty front matter is supplied" do
-      let(:string) { %Q(Hello) }
+    context "when the string has both front matter and content" do
+      let(:string) { %Q(
+---
+title: hello
+---
+Content
+) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "parses the front matter as an empty hash" do
-        expect(parsed.front_matter).to eq({})
+      it "parsed the front matter as a hash" do
+        expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
 
-      it "parses the content as the whole string" do
-        expect(parsed.content).to eq(string)
+      it "parses the content as a string" do
+        expect(parsed.content).to eq("Content\n")
       end
     end
 
@@ -48,83 +41,63 @@ title: hello
       end
     end
 
-    context "when the string has both front matter and content" do
-      let(:string) { %Q(
----
-title: hello
----
-Content
-) }
+    context "when an empty front matter is supplied" do
+      let(:string) { %Q(Hello) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "parsed the front matter as a hash" do
-        expect(parsed.front_matter).to eq({'title' => 'hello'})
+      it "parses the front matter as an empty hash" do
+        expect(parsed.front_matter).to eq({})
       end
 
-      it "parses the content as a string" do
-        expect(parsed.content).to eq("Content\n")
+      it "parses the content as the whole string" do
+        expect(parsed.content).to eq(string)
       end
     end
 
-    context "when each line of the front matter has a line comment" do
-      context "when there is no space between the comment and the rest of the front matter line" do
-        let(:string) { %Q(
+    context "when an empty string is supplied" do
+      let(:parsed) { FrontMatterParser.parse('') }
+
+      it "parses the front matter as an empty hash" do
+        expect(parsed.front_matter).to eq({})
+      end
+
+      it  "parses the content as an empty string" do
+        expect(parsed.content).to eq('')
+      end
+    end
+  end
+end
+
+describe "the front matter" do
+  it "can have each line commented" do
+    string = %Q(
 #---
 #title: hello
 #---
 Content
-) }
+)
+    expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
+  end
 
-        let(:parsed) { FrontMatterParser.parse(string, '#') }
-
-        it "strips the comments and parses the front matter as a hash" do
-          expect(parsed.front_matter).to eq({'title' => 'hello'})
-        end
-
-        it "parses the content as a string" do
-          expect(parsed.content).to eq("Content\n")
-        end
-      end
-
-      context "when there is space between the comment and the rest of the front matter line" do
-        let(:string) { %Q(
+  it "can have each line commented with extra spaces between the comment delimiter and the front matter line" do
+    string = %Q(
 #  ---
 #  title: hello
 #  ---
 Content
-) }
+)
+    expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
+  end
 
-        let(:parsed) { FrontMatterParser.parse(string, '#') }
-
-        it "strips the comments and the white spaces and parses the front matter as a hash" do
-          expect(parsed.front_matter).to eq({'title' => 'hello'})
-        end
-
-        it "parses the content as a string" do
-          expect(parsed.content).to eq("Content\n")
-        end
-      end
-    end
-
-    context "when the front matter is between a multiline comment" do
-      let(:string) { '
+  it "can be between a multiline comment" do
+    string = %Q(
 <!--
 ---
 title: hello
 ---
 -->
 Content
-' }
-
-      let(:parsed) { FrontMatterParser.parse(string, '', '<!--', '-->') }
-
-      it "strips the comments and parses the front matter as a hash" do
-        expect(parsed.front_matter).to eq({'title' => 'hello'})
-      end
-
-      it "parses the content as a string" do
-        expect(parsed.content).to eq("Content\n")
-      end
-    end
+)
+    expect(FrontMatterParser.parse(string, '', '<!--', '-->').front_matter).to eq({'title' => 'hello'})
   end
 end
