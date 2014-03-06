@@ -11,8 +11,7 @@ describe FrontMatterParser do
 ---
 title: hello
 ---
-Content
-) }
+Content) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
       it "parsed the front matter as a hash" do
@@ -20,7 +19,7 @@ Content
       end
 
       it "parses the content as a string" do
-        expect(parsed.content).to eq("Content\n")
+        expect(parsed.content).to eq("Content")
       end
     end
 
@@ -74,8 +73,7 @@ describe "the front matter" do
   ---
   title: hello
   ---
-Content
-)
+Content)
     expect(FrontMatterParser.parse(string).front_matter).to eq({'title' => 'hello'})
   end
 
@@ -84,8 +82,7 @@ Content
 #---
 #title: hello
 #---
-Content
-)
+Content)
     expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
   end
 
@@ -94,8 +91,7 @@ Content
 #  ---
 #  title: hello
 #  ---
-Content
-)
+Content)
     expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
   end
 
@@ -106,8 +102,7 @@ Content
 title: hello
 ---
 -->
-Content
-)
+Content)
     expect(FrontMatterParser.parse(string, '', '<!--', '-->').front_matter).to eq({'title' => 'hello'})
   end
 end
