@@ -69,6 +69,16 @@ title: hello
 end
 
 describe "the front matter" do
+  it "can be indented" do
+    string = %Q(
+  ---
+  title: hello
+  ---
+Content
+)
+    expect(FrontMatterParser.parse(string).front_matter).to eq({'title' => 'hello'})
+  end
+
   it "can have each line commented" do
     string = %Q(
 #---
