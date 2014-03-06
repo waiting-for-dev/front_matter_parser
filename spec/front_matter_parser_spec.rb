@@ -89,7 +89,7 @@ Content
     expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
   end
 
-  it "can have each line commented with extra spaces between the comment delimiter and the front matter line" do
+  it "can be indented after the comment delimiter" do
     string = %Q(
 #  ---
 #  title: hello
