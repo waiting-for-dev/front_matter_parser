@@ -14,7 +14,7 @@ title: hello
 Content) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
-      it "parsed the front matter as a hash" do
+      it "parses the front matter as a hash" do
         expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
 
@@ -35,7 +35,7 @@ title: hello
         expect(parsed.front_matter).to eq({'title' => 'hello'})
       end
 
-      it "parsed the content as an empty string" do
+      it "parses the content as an empty string" do
         expect(parsed.content).to eq('')
       end
     end
