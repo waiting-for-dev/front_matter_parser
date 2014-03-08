@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe FrontMatterParser do
+  let(:sample) { {'title' => 'hello'} }
+
   it 'has a version number' do
     expect(FrontMatterParser::VERSION).to_not be_nil
   end
@@ -15,7 +17,7 @@ Content) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
       it "parses the front matter as a hash" do
-        expect(parsed.front_matter).to eq({'title' => 'hello'})
+        expect(parsed.front_matter).to eq(sample)
       end
 
       it "parses the content as a string" do
@@ -32,7 +34,7 @@ title: hello
       let(:parsed) { FrontMatterParser.parse(string) }
 
       it "parses the front matter as a hash" do
-        expect(parsed.front_matter).to eq({'title' => 'hello'})
+        expect(parsed.front_matter).to eq(sample)
       end
 
       it "parses the content as an empty string" do
@@ -68,13 +70,15 @@ title: hello
 end
 
 describe "the front matter" do
+  let(:sample) { {'title' => 'hello'} }
+
   it "can be indented" do
     string = %Q(
   ---
   title: hello
   ---
 Content)
-    expect(FrontMatterParser.parse(string).front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string).front_matter).to eq(sample)
   end
 
   it "can have each line commented" do
@@ -83,7 +87,7 @@ Content)
 #title: hello
 #---
 Content)
-    expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string, '#').front_matter).to eq(sample)
   end
 
   it "can be indented after the comment delimiter" do
@@ -92,7 +96,7 @@ Content)
 #  title: hello
 #  ---
 Content)
-    expect(FrontMatterParser.parse(string, '#').front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string, '#').front_matter).to eq(sample)
   end
 
   it "can be between a multiline comment" do
@@ -103,7 +107,7 @@ title: hello
 ---
 -->
 Content)
-    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
   end
 
   it "can have the multiline comment delimiters indented" do
@@ -114,7 +118,7 @@ Content)
     ---
     -->
 Content)
-    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
   end
 
   it "can have empty lines between the multiline comment delimiters and the front matter" do
@@ -127,6 +131,6 @@ title: hello
   
 -->
 Content)
-    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
   end
 end
