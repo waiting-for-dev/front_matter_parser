@@ -105,4 +105,17 @@ title: hello
 Content)
     expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq({'title' => 'hello'})
   end
+
+  it "can have empty lines between the multiline comment delimiters and the front matter" do
+    string = %Q(
+<!--
+
+---
+title: hello
+---
+  
+-->
+Content)
+    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq({'title' => 'hello'})
+  end
 end
