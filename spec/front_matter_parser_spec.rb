@@ -83,9 +83,18 @@ Content)
   end
 
   describe "#parse_file" do
-    it "calls #parse with the content of the file and the supplied arguments" do
-      expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.md', __FILE__)), nil, nil, nil)
-      FrontMatterParser.parse_file(File.expand_path('../example_files/example.md', __FILE__))
+    context "when autodetect is true" do
+      it "calls #parse with the content of the file and the comment delimiters detected for the given filetype" do
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.slim', __FILE__)), '//', nil, nil)
+        FrontMatterParser.parse_file(File.expand_path('../example_files/example.slim', __FILE__), true)
+      end
+    end
+
+    context "when autodetect is false" do
+      it "calls #parse with the content of the file and given comment delimiters" do
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.md', __FILE__)), nil, nil, nil)
+        FrontMatterParser.parse_file(File.expand_path('../example_files/example.md', __FILE__), false)
+      end
     end
   end
 end

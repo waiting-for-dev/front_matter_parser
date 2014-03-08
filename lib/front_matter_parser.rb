@@ -3,6 +3,10 @@ require "front_matter_parser/version"
 require "front_matter_parser/parsed"
 
 module FrontMatterParser
+  COMMENT_DELIMITERS = {
+    slim: ['//', nil, nil]
+  }
+
   def self.parse(string, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
     raise(ArgumentError, 'Both or none of theme must be nil for start_multiline_comment_delimiter and end_multiline_comment_delimiter') if (start_multiline_comment_delimiter != nil and end_multiline_comment_delimiter == nil) or (end_multiline_comment_delimiter != nil and start_multiline_comment_delimiter == nil)
     parsed = Parsed.new
@@ -36,8 +40,14 @@ module FrontMatterParser
     parsed
   end
 
-  def self.parse_file(pathname, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
+  def self.parse_file(pathname, autodetect = true, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
     File.open(pathname) do |file|
+      if autodetect
+        comment_delimiters = COMMENT_DELIMITERS[File.extname(pathname)[1 .. -1].to_sym]
+        comment_delimiter = comment_delimiters[0]
+        start_multiline_comment_delimiter = comment_delimiters[1]
+        end_multiline_comment_delimiter = comment_delimiters[2]
+      end
       parse(file.read, comment_delimiter, start_multiline_comment_delimiter, end_multiline_comment_delimiter)
     end
   end
