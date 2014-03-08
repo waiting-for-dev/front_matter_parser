@@ -4,6 +4,7 @@ require "front_matter_parser/parsed"
 
 module FrontMatterParser
   def self.parse(string, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
+    raise(ArgumentError, 'Both or none of theme must be nil for start_multiline_comment_delimiter and end_multiline_comment_delimiter') if (start_multiline_comment_delimiter != nil and end_multiline_comment_delimiter == nil) or (end_multiline_comment_delimiter != nil and start_multiline_comment_delimiter == nil)
     parsed = Parsed.new
     if matches = (string.match(/
                                # Start of string

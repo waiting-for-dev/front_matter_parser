@@ -66,6 +66,20 @@ title: hello
         expect(parsed.content).to eq('')
       end
     end
+
+    context "when only one of the pair of multiline comment delimiters are supplied" do
+      it "raises an ArgumentError" do
+        string = %Q(
+<!--
+---
+title: hello
+---
+-->
+Content)
+        expect {FrontMatterParser.parse(string, nil, '<!--', nil)}.to raise_error(ArgumentError)
+        expect {FrontMatterParser.parse(string, nil, nil, '-->')}.to raise_error(ArgumentError)
+      end
+    end
   end
 end
 
