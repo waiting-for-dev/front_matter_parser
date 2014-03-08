@@ -103,6 +103,6 @@ title: hello
 ---
 -->
 Content)
-    expect(FrontMatterParser.parse(string, '', '<!--', '-->').front_matter).to eq({'title' => 'hello'})
+    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq({'title' => 'hello'})
   end
 end
