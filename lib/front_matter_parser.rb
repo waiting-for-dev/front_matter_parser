@@ -44,7 +44,9 @@ module FrontMatterParser
 
   def self.parse_file(pathname, autodetect = true, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
     if autodetect
-      comment_delimiters = COMMENT_DELIMITERS[File.extname(pathname)[1 .. -1].to_sym]
+      ext = File.extname(pathname)[1 .. -1].to_sym
+      raise(RuntimeError, "Comment delimiters for extension #{ext.to_s} not known. Please, call #parse_file without autodetect and provide comment delimiters.") unless COMMENT_DELIMITERS.has_key?(ext)
+      comment_delimiters = COMMENT_DELIMITERS[ext]
       comment_delimiter = comment_delimiters[0]
       start_multiline_comment_delimiter = comment_delimiters[1]
       end_multiline_comment_delimiter = comment_delimiters[2]
