@@ -81,6 +81,13 @@ Content)
       end
     end
   end
+
+  describe "#parse_file" do
+    it "calls #parse with the content of the file and the supplied arguments" do
+      expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.md', __FILE__)), nil, nil, nil)
+      FrontMatterParser.parse_file(File.expand_path('../example_files/example.md', __FILE__))
+    end
+  end
 end
 
 describe "the front matter" do

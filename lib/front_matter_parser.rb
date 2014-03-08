@@ -35,4 +35,10 @@ module FrontMatterParser
     end
     parsed
   end
+
+  def self.parse_file(pathname, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
+    File.open(pathname) do |file|
+      parse(file.read, comment_delimiter, start_multiline_comment_delimiter, end_multiline_comment_delimiter)
+    end
+  end
 end
