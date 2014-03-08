@@ -4,7 +4,9 @@ require "front_matter_parser/parsed"
 
 module FrontMatterParser
   COMMENT_DELIMITERS = {
-    slim: ['//', nil, nil]
+    slim: ['//', nil, nil],
+    html: [nil, '<!--', '-->'],
+    coffee: ['#', nil, nil],
   }
 
   def self.parse(string, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
