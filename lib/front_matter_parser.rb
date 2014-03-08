@@ -43,13 +43,13 @@ module FrontMatterParser
   end
 
   def self.parse_file(pathname, autodetect = true, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
+    if autodetect
+      comment_delimiters = COMMENT_DELIMITERS[File.extname(pathname)[1 .. -1].to_sym]
+      comment_delimiter = comment_delimiters[0]
+      start_multiline_comment_delimiter = comment_delimiters[1]
+      end_multiline_comment_delimiter = comment_delimiters[2]
+    end
     File.open(pathname) do |file|
-      if autodetect
-        comment_delimiters = COMMENT_DELIMITERS[File.extname(pathname)[1 .. -1].to_sym]
-        comment_delimiter = comment_delimiters[0]
-        start_multiline_comment_delimiter = comment_delimiters[1]
-        end_multiline_comment_delimiter = comment_delimiters[2]
-      end
       parse(file.read, comment_delimiter, start_multiline_comment_delimiter, end_multiline_comment_delimiter)
     end
   end
