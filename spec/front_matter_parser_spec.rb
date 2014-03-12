@@ -88,6 +88,7 @@ Content)
         coffee: ['coffee', '#', nil, nil],
         html: ['html', nil, '<!--', '-->'],
         haml: ['haml', nil, '-#', nil],
+        liquid: ['liquid', nil, '<% comment %>', '<% endcomment %>'],
       }.each_pair do |format, prop|
         it "can detect a #{format} file" do
           expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../example_files/example.#{prop[0]}", __FILE__)), prop[1], prop[2], prop[3])
