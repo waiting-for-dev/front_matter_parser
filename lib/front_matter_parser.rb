@@ -7,6 +7,7 @@ module FrontMatterParser
     slim: [nil, '/', nil],
     html: [nil, '<!--', '-->'],
     coffee: ['#', nil, nil],
+    haml: [nil, '-#', nil],
   }
 
   def self.parse(string, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
