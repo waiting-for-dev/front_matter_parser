@@ -10,7 +10,7 @@ module FrontMatterParser
   }
 
   def self.parse(string, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
-    raise(ArgumentError, 'Both or none of theme must be nil for start_multiline_comment_delimiter and end_multiline_comment_delimiter') if (start_multiline_comment_delimiter != nil and end_multiline_comment_delimiter == nil) or (end_multiline_comment_delimiter != nil and start_multiline_comment_delimiter == nil)
+    raise(ArgumentError, 'If you provide the end_multiline_comment_delimiter, you must provide start_multiline_comment_delimiter') if (end_multiline_comment_delimiter != nil and start_multiline_comment_delimiter == nil)
     parsed = Parsed.new
     if matches = (string.match(/
                                # Start of string
