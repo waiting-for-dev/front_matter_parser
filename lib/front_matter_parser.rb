@@ -18,7 +18,7 @@ module FrontMatterParser
                                # Zero or more space characters
                                ([[:space:]]*)
                                # Start multiline comment
-                               #{'(?-x:^[[:blank:]]*'+start_multiline_comment_delimiter+'[[:blank:]]*[\n\r][[:space:]]*)' unless start_multiline_comment_delimiter.nil?}
+                               #{'(?-x:(?<multiline_comment_indentation>^[[:blank:]]*)'+start_multiline_comment_delimiter+'[[:blank:]]*[\n\r][[:space:]]*)' unless start_multiline_comment_delimiter.nil?}
                                # Begin front matter
                                (?-x:^[[:blank:]]*#{comment_delimiter}[[:blank:]]*---[[:blank:]]*$[\n\r])
                                # The front matter
@@ -26,7 +26,8 @@ module FrontMatterParser
                                # End front matter
                                (?-x:^[[:blank:]]*#{comment_delimiter}[[:blank:]]*---[[:blank:]]*$[\n\r])
                                # End multiline comment
-                                 #{'(?-x:[[:space:]]*^[[:blank:]]*'+end_multiline_comment_delimiter+'[[:blank:]]*[\n\r])' unless end_multiline_comment_delimiter.nil?}
+                               #{'(?-x:\k<multiline_comment_indentation>)' if end_multiline_comment_delimiter.nil? and not start_multiline_comment_delimiter.nil?}
+                               #{'(?-x:[[:space:]]*^[[:blank:]]*'+end_multiline_comment_delimiter+'[[:blank:]]*[\n\r])' if not end_multiline_comment_delimiter.nil?}
                                # The content
                                (?<content>.*)
                                # End of string

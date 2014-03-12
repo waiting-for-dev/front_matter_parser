@@ -168,4 +168,14 @@ title: hello
 Content)
     expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
   end
+
+  it "can have multiline comment delimited by indentation" do
+    string = %Q(
+  /
+    ---
+    title: hello
+    ---
+  Content)
+    expect(FrontMatterParser.parse(string, nil, '/', nil).front_matter).to eq(sample)
+  end
 end
