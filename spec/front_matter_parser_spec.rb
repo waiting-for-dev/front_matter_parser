@@ -84,11 +84,9 @@ Content)
 
   describe "#parse_file" do
     context "when autodetect is true" do
-      context "when the file extension is known" do
-        it "calls #parse with the content of the file and the comment delimiters detected for the given filetype" do
-          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.slim', __FILE__)), '//', nil, nil)
-          FrontMatterParser.parse_file(File.expand_path('../example_files/example.slim', __FILE__), true)
-        end
+      it "can detect a slim file" do
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.slim', __FILE__)), '//', nil, nil)
+        FrontMatterParser.parse_file(File.expand_path('../example_files/example.slim', __FILE__), true)
       end
 
       context "when the file extension is unknown" do
