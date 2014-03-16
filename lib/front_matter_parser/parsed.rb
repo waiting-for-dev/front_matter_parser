@@ -6,12 +6,7 @@ class FrontMatterParser::Parsed
   #   @return [String] the parsed content
   attr_accessor :front_matter, :content
 
-  # Returns the front matter
-  #
-  # @see front_matter
-  def to_hash
-    @front_matter
-  end
+  alias_method :to_hash, :front_matter
 
   # Returns the front matter value for the given key
   #
