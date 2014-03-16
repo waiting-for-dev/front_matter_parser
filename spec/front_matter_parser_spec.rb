@@ -91,22 +91,22 @@ Content)
         liquid: ['liquid', nil, '<% comment %>', '<% endcomment %>'],
       }.each_pair do |format, prop|
         it "can detect a #{format} file" do
-          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../example_files/example.#{prop[0]}", __FILE__)), prop[1], prop[2], prop[3])
-          FrontMatterParser.parse_file(File.expand_path("../example_files/example.#{prop[0]}", __FILE__), true)
+          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__)), prop[1], prop[2], prop[3])
+          FrontMatterParser.parse_file(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__), true)
         end
       end
 
       context "when the file extension is unknown" do
         it "raises a RuntimeError" do
-          expect {FrontMatterParser.parse_file(File.expand_path('../example_files/example.foo', __FILE__), true)}.to raise_error(RuntimeError)
+          expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__), true)}.to raise_error(RuntimeError)
         end
       end
     end
 
     context "when autodetect is false" do
       it "calls #parse with the content of the file and given comment delimiters" do
-        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../example_files/example.md', __FILE__)), nil, nil, nil)
-        FrontMatterParser.parse_file(File.expand_path('../example_files/example.md', __FILE__), false)
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.md', __FILE__)), nil, nil, nil)
+        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.md', __FILE__), false)
       end
     end
   end
