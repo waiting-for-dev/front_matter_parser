@@ -18,5 +18,11 @@ Content) }
         expect(parsed.to_hash).to eq(sample)
       end
     end
+
+    describe "#[]" do
+      it "returns the front matter value for the given key" do
+        expect(parsed['title']).to eq('hello')
+      end
+    end
   end
 end

@@ -4,4 +4,8 @@ class FrontMatterParser::Parsed
   def to_hash
     @front_matter
   end
+
+  def [](key)
+    @front_matter[key]
+  end
 end
