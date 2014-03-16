@@ -91,6 +91,7 @@ Content)
         liquid: ['liquid', nil, '<% comment %>', '<% endcomment %>'],
         sass: ['sass', '//', nil, nil],
         scss: ['scss', '//', nil, nil],
+        md: ['md', nil, nil, nil],
       }.each_pair do |format, prop|
         it "can detect a #{format} file" do
           expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__)), prop[1], prop[2], prop[3])

@@ -18,6 +18,7 @@ module FrontMatterParser
     liquid: [nil, '<% comment %>', '<% endcomment %>'],
     sass: ['//', nil, nil],
     scss: ['//', nil, nil],
+    md: [nil, nil, nil],
   }
 
   # Parses a string into a {Parsed} instance. For the meaning of comment delimiters, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxs).
