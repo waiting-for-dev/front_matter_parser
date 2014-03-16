@@ -16,6 +16,7 @@ module FrontMatterParser
     coffee: ['#', nil, nil],
     haml: [nil, '-#', nil],
     liquid: [nil, '<% comment %>', '<% endcomment %>'],
+    sass: ['//', nil, nil],
   }
 
   # Parses a string into a {Parsed} instance. For the meaning of comment delimiters, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxs).
