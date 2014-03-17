@@ -2,8 +2,7 @@ require 'yaml'
 require "front_matter_parser/version"
 require "front_matter_parser/parsed"
 
-# 
-# FrontMatterParser module is the entry point to parse strings or file with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as comments.
+# FrontMatterParser module is the entry point to parse strings or files with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.
 module FrontMatterParser
   # {Hash {Symbol => Array}} Comments delimiters used in FrontMatterParser known syntaxs. Keys are file extensions, and values are three elements array:
   #
