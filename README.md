@@ -1,6 +1,6 @@
 # FrontMatterParser
 
-FrontMatterParser is a library to parse strings or files with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.
+FrontMatterParser is a library to parse files or strings with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.
 
 ## Installation
 
@@ -52,7 +52,7 @@ Given a file `example.haml`:
 
 The `-#` and the indentation enclose the front matter as a comment. `FrontMatterParser` is aware of it and you can simply do:
 
-    title = FrontMatterParser.parse_file('example.haml')['title']
+    title = FrontMatterParser.parse_file('example.haml')['title'] #=> 'Hello'
 
 Following there is a relation of known syntaxs and their known comment delimiters:
 
@@ -69,16 +69,18 @@ Following there is a relation of known syntaxs and their known comment delimiter
 | scss   | //                  |                         |                        |
 </pre>
 
-You can overide them passing `false` as second argument for `parse_file` and then the delimiters for single line comment, start multiline comment and end multilien comment:
+You can provide your own by passing `autodetect: false` and options for single line comment delimiter (`:comment`) or start multiline comment (`:start_comment`) and end multiline comment (`:end_comment`) delimiters. If `:start_comment` is provided but it isn't `:end_comment`, then it is supposed that the multiline comment is ended by indentation.
 
-    FrontMatterParser.parse_file('example.haml', false, nil, '<!--', '-->')
+    FrontMatterParser.parse_file('example.haml', autodetect: false, start_comment: '<!--', end_comment: '-->') # start and end multiline comment delimiters
+    FrontMatterParser.parse_file('example.slim', autodetect: false, start_comment: '/!') # multiline comment closed by indentation
+    FrontMatterParser.parse_file('example.foo', autodetect: false, comment: '#') # single line comments
 
 ### Parsing a string
 
 You can as well parse a string, providing manually its comment delimiters if needed:
 
-    string = File.read('example.html')
-    FrontMatterParser.parse(string, nil, '<!--', '-->')
+    string = File.read('example.slim')
+    FrontMatterParser.parse(string, start_comment: '/')
 
 ## Contributing
 

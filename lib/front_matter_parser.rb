@@ -20,17 +20,23 @@ module FrontMatterParser
     md: [nil, nil, nil],
   }
 
-  # Parses a string into a {Parsed} instance. For the meaning of comment delimiters, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxs).
+  # Parses a string into a {Parsed} instance. For comment options, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxs).
   #
   # @param string [String] The string to parse
-  # @param comment_delimiter [String, nil] Single line comment delimiter
-  # @param start_multiline_comment_delimiter [String, nil] Start multiline comment delimiter
-  # @param end_multiline_comment_delimiter [String, nil] End multiline comment delimiter
+  # @param opts [Hash] Options
+  # @option opts [String, nil] :comment Single line comment delimiter
+  # @option opts [String, nil] :start_comment Start multiline comment delimiter
+  # @option opts [String, nil] :end_comment End multiline comment delimiter
   # @return [Parsed]
-  # @raise [ArgumentError] If end_multiline_comment_delimiter is provided but not start_multiline_comment_delimiter
+  # @raise [ArgumentError] If end_comment option is provided but not start_comment
   # @see COMMENT_DELIMITERS
-  def self.parse(string, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
-    raise(ArgumentError, 'If you provide the end_multiline_comment_delimiter, you must provide start_multiline_comment_delimiter') if (end_multiline_comment_delimiter != nil and start_multiline_comment_delimiter == nil)
+  def self.parse(string, opts = {})
+    opts = {
+      comment: nil,
+      start_comment: nil,
+      end_comment: nil,
+    }.merge(opts)
+    raise(ArgumentError, "If you provide the `end_comment` option, you must provide also the `start_comment` option") if (opts[:end_comment] != nil and opts[:start_comment] == nil)
     parsed = Parsed.new
     if matches = (string.match(/
                                # Start of string
@@ -38,22 +44,22 @@ module FrontMatterParser
                                # Zero or more space characters
                                ([[:space:]]*)
                                # Start multiline comment
-                               #{'(?-x:(?<multiline_comment_indentation>^[[:blank:]]*)'+start_multiline_comment_delimiter+'[[:blank:]]*[\n\r][[:space:]]*)' unless start_multiline_comment_delimiter.nil?}
+                               #{'(?-x:(?<multiline_comment_indentation>^[[:blank:]]*)'+opts[:start_comment]+'[[:blank:]]*[\n\r][[:space:]]*)' unless opts[:start_comment].nil?}
                                # Begin front matter
-                               (?-x:^[[:blank:]]*#{comment_delimiter}[[:blank:]]*---[[:blank:]]*$[\n\r])
+                               (?-x:^[[:blank:]]*#{opts[:comment]}[[:blank:]]*---[[:blank:]]*$[\n\r])
                                # The front matter
                                (?<front_matter>.*)
                                # End front matter
-                               (?-x:^[[:blank:]]*#{comment_delimiter}[[:blank:]]*---[[:blank:]]*$[\n\r])
+                               (?-x:^[[:blank:]]*#{opts[:comment]}[[:blank:]]*---[[:blank:]]*$[\n\r])
                                # End multiline comment
-                               #{'(?-x:\k<multiline_comment_indentation>)' if end_multiline_comment_delimiter.nil? and not start_multiline_comment_delimiter.nil?}
-                               #{'(?-x:[[:space:]]*^[[:blank:]]*'+end_multiline_comment_delimiter+'[[:blank:]]*[\n\r])' if not end_multiline_comment_delimiter.nil?}
+                               #{'(?-x:\k<multiline_comment_indentation>)' if opts[:end_comment].nil? and not opts[:start_comment].nil?}
+                               #{'(?-x:[[:space:]]*^[[:blank:]]*'+opts[:end_comment]+'[[:blank:]]*[\n\r])' if not opts[:end_comment].nil?}
                                # The content
                                (?<content>.*)
                                # End of string
                                \z
                                /mx))
-      front_matter = matches[:front_matter].gsub(/^#{comment_delimiter}/, '')
+      front_matter = matches[:front_matter].gsub(/^#{opts[:comment]}/, '')
       parsed.front_matter = YAML.load(front_matter)
       parsed.content = matches[:content]
     else
@@ -63,28 +69,35 @@ module FrontMatterParser
     parsed
   end
 
-  # Parses a file into a {Parsed} instance. If `autodetect` is `true`, comment delimiters are guessed from the file extension. If it is `false` the rest of attributes are taken into consideration. See {COMMENT_DELIMITERS} to a list of known syntaxs and the comment delimiters values.
+  # Parses a file into a {Parsed} instance. If autodetect option is `true`, comment delimiters are guessed from the file extension. If it is `false` comment options are taken into consideration. See {COMMENT_DELIMITERS} for a list of known syntaxs and the comment delimiters values.
   #
   # @param pathname [String] The path to the file
-  # @param autodetect [Boolean] If it is true, FrontMatterParser uses the comment delimiters known for the syntax of the file and the rest of arguments are ignored. If it is false, the rest of arguments are taken into consideration.
-  # @param comment_delimiter [String, nil] Single line comment delimiter
-  # @param start_multiline_comment_delimiter [String, nil] Start multiline comment delimiter
-  # @param end_multiline_comment_delimiter [String, nil] End multiline comment delimiter
+  # @param opts [Hash] Options
+  # @option opts [Boolean] :autodetect If it is true, FrontMatterParser uses the comment delimiters known for the syntax of the file and comment options are ignored. If it is false, comment options are taken into consideration.
+  # @option opts [String, nil] :comment Single line comment delimiter
+  # @option opts [String, nil] :start_comment Start multiline comment delimiter
+  # @option opts [String, nil] :end_comment End multiline comment delimiter
   # @return [Parsed]
-  # @raise [ArgumentError] If autodetect is false, and end_multiline_comment_delimiter is provided but not start_multiline_comment_delimiter
+  # @raise [ArgumentError] If autodetect option is false, and start_comment option is provided but not end_comment
   # @raise [RuntimeError] If the syntax of the file (the extension) is not within the keys of {COMMENT_DELIMITERS}
   # @see COMMENT_DELIMITERS
-  def self.parse_file(pathname, autodetect = true, comment_delimiter = nil, start_multiline_comment_delimiter = nil, end_multiline_comment_delimiter = nil)
-    if autodetect
+  def self.parse_file(pathname, opts={})
+    opts = {
+      autodetect: true,
+      comment: nil,
+      start_comment: nil,
+      end_comment: nil,
+    }.merge(opts)
+    if opts[:autodetect]
       ext = File.extname(pathname)[1 .. -1].to_sym
-      raise(RuntimeError, "Comment delimiters for extension #{ext.to_s} not known. Please, call #parse_file without autodetect and provide comment delimiters.") unless COMMENT_DELIMITERS.has_key?(ext)
+      raise(RuntimeError, "Comment delimiters for extension #{ext.to_s} not known. Please, call #parse_file without autodetect option and provide comment delimiters.") unless COMMENT_DELIMITERS.has_key?(ext)
       comment_delimiters = COMMENT_DELIMITERS[ext]
-      comment_delimiter = comment_delimiters[0]
-      start_multiline_comment_delimiter = comment_delimiters[1]
-      end_multiline_comment_delimiter = comment_delimiters[2]
+      opts[:comment] = comment_delimiters[0]
+      opts[:start_comment] = comment_delimiters[1]
+      opts[:end_comment] = comment_delimiters[2]
     end
     File.open(pathname) do |file|
-      parse(file.read, comment_delimiter, start_multiline_comment_delimiter, end_multiline_comment_delimiter)
+      parse(file.read, comment: opts[:comment], start_comment: opts[:start_comment], end_comment: opts[:end_comment])
     end
   end
 end

@@ -76,7 +76,7 @@ title: hello
 ---
 -->
 Content)
-        expect {FrontMatterParser.parse(string, nil, nil, '-->')}.to raise_error(ArgumentError)
+        expect {FrontMatterParser.parse(string, end_comment: '-->')}.to raise_error(ArgumentError)
       end
     end
   end
@@ -94,22 +94,22 @@ Content)
         md: ['md', nil, nil, nil],
       }.each_pair do |format, prop|
         it "can detect a #{format} file" do
-          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__)), prop[1], prop[2], prop[3])
-          FrontMatterParser.parse_file(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__), true)
+          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__)), comment: prop[1], start_comment: prop[2], end_comment: prop[3])
+          FrontMatterParser.parse_file(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__), autodetct: true)
         end
       end
 
       context "when the file extension is unknown" do
         it "raises a RuntimeError" do
-          expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__), true)}.to raise_error(RuntimeError)
+          expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__), autodetect: true)}.to raise_error(RuntimeError)
         end
       end
     end
 
     context "when autodetect is false" do
       it "calls #parse with the content of the file and given comment delimiters" do
-        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.md', __FILE__)), nil, nil, nil)
-        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.md', __FILE__), false)
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.md', __FILE__)), comment: nil, start_comment: nil, end_comment: nil)
+        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.md', __FILE__), autodetect: false)
       end
     end
   end
@@ -133,7 +133,7 @@ Content)
 #title: hello
 #---
 Content)
-    expect(FrontMatterParser.parse(string, '#').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, comment: '#').front_matter).to eq(sample)
   end
 
   it "can be indented after the comment delimiter" do
@@ -142,7 +142,7 @@ Content)
 #  title: hello
 #  ---
 Content)
-    expect(FrontMatterParser.parse(string, '#').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, comment: '#').front_matter).to eq(sample)
   end
 
   it "can be between a multiline comment" do
@@ -153,7 +153,7 @@ title: hello
 ---
 -->
 Content)
-    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
   end
 
   it "can have the multiline comment delimiters indented" do
@@ -164,7 +164,7 @@ Content)
     ---
     -->
 Content)
-    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
   end
 
   it "can have empty lines between the multiline comment delimiters and the front matter" do
@@ -177,7 +177,7 @@ title: hello
   
 -->
 Content)
-    expect(FrontMatterParser.parse(string, nil, '<!--', '-->').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
   end
 
   it "can have multiline comment delimited by indentation" do
@@ -187,6 +187,6 @@ Content)
     title: hello
     ---
   Content)
-    expect(FrontMatterParser.parse(string, nil, '/', nil).front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '/').front_matter).to eq(sample)
   end
 end
