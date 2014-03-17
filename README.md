@@ -94,6 +94,10 @@ You can as well parse a string, providing manually its comment delimiters if nee
 
 `front_matter_parser` follows the principles of [semantic versioning](http://semver.org/).
 
+## Other ruby front matter parsers
+* [front-matter](https://github.com/zhaocai/front-matter.rb) Can parse YAML front matters with single line comments delimiters. YAML must be correctly indented.
+* [ruby_front_matter](https://github.com/F-3r/ruby_front_matter) Can parse JSON front matters and can configure front matter global delimiters, but does not accept comment delimiters.
+
 ## LICENSE
 
 Copyright 2013 Marc Busqué - <marc@lamarciana.com>
