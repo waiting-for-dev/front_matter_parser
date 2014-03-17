@@ -4,7 +4,7 @@ require "front_matter_parser/parsed"
 
 # FrontMatterParser module is the entry point to parse strings or files with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.
 module FrontMatterParser
-  # {Hash {Symbol => Array}} Comments delimiters used in FrontMatterParser known syntaxs. Keys are file extensions, and values are three elements array:
+  # {Hash {Symbol => Array}} Comments delimiters used in FrontMatterParser known syntaxes. Keys are file extensions, and values are three elements array:
   #
   # * First element is single line comment delimiter.
   # * Second element is the start multiline comment delimiter.
@@ -20,7 +20,7 @@ module FrontMatterParser
     md: [nil, nil, nil],
   }
 
-  # Parses a string into a {Parsed} instance. For comment options, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxs).
+  # Parses a string into a {Parsed} instance. For comment options, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxes).
   #
   # @param string [String] The string to parse
   # @param opts [Hash] Options
@@ -69,7 +69,7 @@ module FrontMatterParser
     parsed
   end
 
-  # Parses a file into a {Parsed} instance. If autodetect option is `true`, comment delimiters are guessed from the file extension. If it is `false` comment options are taken into consideration. See {COMMENT_DELIMITERS} for a list of known syntaxs and the comment delimiters values.
+  # Parses a file into a {Parsed} instance. If autodetect option is `true`, comment delimiters are guessed from the file extension. If it is `false` comment options are taken into consideration. See {COMMENT_DELIMITERS} for a list of known syntaxes and the comment delimiters values.
   #
   # @param pathname [String] The path to the file
   # @param opts [Hash] Options

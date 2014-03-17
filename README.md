@@ -54,7 +54,7 @@ The `-#` and the indentation enclose the front matter as a comment. `FrontMatter
 
     title = FrontMatterParser.parse_file('example.haml')['title'] #=> 'Hello'
 
-Following there is a relation of known syntaxs and their known comment delimiters:
+Following there is a relation of known syntaxes and their known comment delimiters:
 
 <pre>
 | Syntax | Single line comment | Start multiline comment | End multiline comment  |
@@ -94,7 +94,14 @@ You can as well parse a string, providing manually its comment delimiters if nee
 
 `front_matter_parser` follows the principles of [semantic versioning](http://semver.org/).
 
+## To Do
+
+* Allow configuration of global front matter delimiters. It would be easy, but I'm not sure if too useful.
+* Allow different formats (as JSON). Again, I'm not sure if it would be very useful.
+* Add more known syntaxes.
+
 ## Other ruby front matter parsers
+
 * [front-matter](https://github.com/zhaocai/front-matter.rb) Can parse YAML front matters with single line comments delimiters. YAML must be correctly indented.
 * [ruby_front_matter](https://github.com/F-3r/ruby_front_matter) Can parse JSON front matters and can configure front matter global delimiters, but does not accept comment delimiters.
 
