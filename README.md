@@ -63,7 +63,7 @@ Following there is a relation of known syntaxes and their known comment delimite
 | slim   |                     | /                       | (indentation)          |
 | liquid |                     | <% comment %>           | <% endcomment %>       |
 | md     |                     |                         |                        |
-| html   |                     | &lt;!--                 | --&gt;                 |
+| html   |                     | &lt;!--                    | --&gt;                    |
 | coffee | #                   |                         |                        |
 | sass   | //                  |                         |                        |
 | scss   | //                  |                         |                        |
@@ -96,9 +96,9 @@ You can as well parse a string, providing manually its comment delimiters if nee
 
 ## To Do
 
+* Add more known syntaxes.
 * Allow configuration of global front matter delimiters. It would be easy, but I'm not sure if too useful.
 * Allow different formats (as JSON). Again, I'm not sure if it would be very useful.
-* Add more known syntaxes.
 
 ## Other ruby front matter parsers
 
