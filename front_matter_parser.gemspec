@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.version       = FrontMatterParser::VERSION
   spec.authors       = ["marc"]
   spec.email         = ["marc@lamarciana.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.description   = %q{Library to parse files or strings with YAML front matters with syntax autodetection.}
+  spec.summary       = %q{FrontMatterParser is a library to parse files or strings with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.}
+  spec.homepage      = "https://github.com/laMarciana/front_matter_parser"
+  spec.license       = "GPL3"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -19,6 +19,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rake", "~>10.1"
+  spec.add_development_dependency "rspec", "~> 2.14"
 end
