@@ -20,6 +20,12 @@ Content) }
         parsed = FrontMatterParser.parse(string, comment: '#')
         expect(parsed.front_matter).to eq(sample)
       end
+
+      context "when :start_comment is provided" do
+        it "raises an ArgumentError" do
+          expect { FrontMatterParser.parse(string, comment: '#', start_comment: '/')}.to raise_error ArgumentError
+        end
+      end
     end
 
     context "when the string has both front matter and content" do

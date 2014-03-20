@@ -37,6 +37,7 @@ module FrontMatterParser
       end_comment: nil,
     }.merge(opts)
     raise(ArgumentError, "If you provide the `end_comment` option, you must provide also the `start_comment` option") if (opts[:end_comment] != nil and opts[:start_comment] == nil)
+    raise(ArgumentError, "You can not provide :comment and :start_comment options at the same time") if (opts[:start_comment] != nil and opts[:comment] != nil)
     parsed = Parsed.new
     if matches = (string.match(/
                                # Start of string
