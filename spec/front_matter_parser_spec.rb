@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FrontMatterParser do
-  let(:sample) { {'title' => 'hello'} }
+  let(:sample_fm) { {'title' => 'hello'} }
 
   it 'has a version number' do
     expect(FrontMatterParser::VERSION).to_not be_nil
@@ -9,64 +9,39 @@ describe FrontMatterParser do
 
   describe "#parse" do
     context "when :comment option is provided" do
-      let(:string) { %Q(
-# ---
-# title: hello
-# ---
-Content) }
-
       it "understand it as single line comment mark for the front matter" do
-        parsed = FrontMatterParser.parse(string, comment: '#')
-        expect(parsed.front_matter).to eq(sample)
+        parsed = FrontMatterParser.parse(string_comment('#'), comment: '#')
+        expect(parsed.front_matter).to eq(sample_fm)
       end
 
       context "when :start_comment is provided" do
         it "raises an ArgumentError" do
-          expect { FrontMatterParser.parse(string, comment: '#', start_comment: '/')}.to raise_error ArgumentError
+          expect { FrontMatterParser.parse(string_comment('#'), comment: '#', start_comment: '/')}.to raise_error ArgumentError
         end
       end
     end
 
     context "when :start_comment option is provided" do
       context "when :end_comment option is not provided" do
-        let(:string) { %Q(
-/
-  ---
-  title: hello
-  ---
-Content) }
-
         it "understand :start_comment as the multiline comment mark, closed by indentation, for the front matter" do
-          parsed = FrontMatterParser.parse(string, start_comment: '/')
-          expect(parsed.front_matter).to eq(sample)
+          parsed = FrontMatterParser.parse(string_start_comment('/'), start_comment: '/')
+          expect(parsed.front_matter).to eq(sample_fm)
         end
       end
 
       context "when :end_comment option is provided" do
-        let(:string) { %Q(
-<!--
-  ---
-  title: hello
-  ---
--->) }
-
         it "understand :start_comment and :end_comment as the multiline comment mark delimiters for the front matter" do
-          parsed = FrontMatterParser.parse(string, start_comment: '<!--', end_coment: '-->')
-          expect(parsed.front_matter).to eq(sample)
+          parsed = FrontMatterParser.parse(string_start_end_comment('<!--', '-->'), start_comment: '<!--', end_coment: '-->')
+          expect(parsed.front_matter).to eq(sample_fm)
         end
       end
     end
 
     context "when the string has both front matter and content" do
-      let(:string) { %Q(
----
-title: hello
----
-Content) }
       let(:parsed) { FrontMatterParser.parse(string) }
 
       it "parses the front matter as a hash" do
-        expect(parsed.front_matter).to eq(sample)
+        expect(parsed.front_matter).to eq(sample_fm)
       end
 
       it "parses the content as a string" do
@@ -75,15 +50,10 @@ Content) }
     end
 
     context "when the string only has front matter" do
-      let(:string) { %Q(
----
-title: hello
----
-) }
-      let(:parsed) { FrontMatterParser.parse(string) }
+      let(:parsed) { FrontMatterParser.parse(string_no_content) }
 
       it "parses the front matter as a hash" do
-        expect(parsed.front_matter).to eq(sample)
+        expect(parsed.front_matter).to eq(sample_fm)
       end
 
       it "parses the content as an empty string" do
@@ -92,15 +62,14 @@ title: hello
     end
 
     context "when an empty front matter is supplied" do
-      let(:string) { %Q(Hello) }
-      let(:parsed) { FrontMatterParser.parse(string) }
+      let(:parsed) { FrontMatterParser.parse(string_no_front_matter) }
 
       it "parses the front matter as an empty hash" do
         expect(parsed.front_matter).to eq({})
       end
 
       it "parses the content as the whole string" do
-        expect(parsed.content).to eq(string)
+        expect(parsed.content).to eq("Content")
       end
     end
 
@@ -165,7 +134,7 @@ Content)
 end
 
 describe "the front matter" do
-  let(:sample) { {'title' => 'hello'} }
+  let(:sample_fm) { {'title' => 'hello'} }
 
   it "can be indented" do
     string = %Q(
@@ -173,7 +142,7 @@ describe "the front matter" do
   title: hello
   ---
 Content)
-    expect(FrontMatterParser.parse(string).front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string).front_matter).to eq(sample_fm)
   end
 
   it "can have each line commented" do
@@ -182,7 +151,7 @@ Content)
 #title: hello
 #---
 Content)
-    expect(FrontMatterParser.parse(string, comment: '#').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, comment: '#').front_matter).to eq(sample_fm)
   end
 
   it "can be indented after the comment delimiter" do
@@ -191,7 +160,7 @@ Content)
 #  title: hello
 #  ---
 Content)
-    expect(FrontMatterParser.parse(string, comment: '#').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, comment: '#').front_matter).to eq(sample_fm)
   end
 
   it "can be between a multiline comment" do
@@ -202,7 +171,7 @@ title: hello
 ---
 -->
 Content)
-    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample_fm)
   end
 
   it "can have the multiline comment delimiters indented" do
@@ -213,7 +182,7 @@ Content)
     ---
     -->
 Content)
-    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample_fm)
   end
 
   it "can have empty lines between the multiline comment delimiters and the front matter" do
@@ -226,7 +195,7 @@ title: hello
 
 -->
 Content)
-    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample_fm)
   end
 
   it "can have multiline comment delimited by indentation" do
@@ -236,6 +205,48 @@ Content)
     title: hello
     ---
   Content)
-    expect(FrontMatterParser.parse(string, start_comment: '/').front_matter).to eq(sample)
+    expect(FrontMatterParser.parse(string, start_comment: '/').front_matter).to eq(sample_fm)
   end
+end
+
+def string
+"---
+title: hello
+---
+Content"
+end
+
+def string_no_front_matter
+"Content"
+end
+
+def string_no_content
+"---
+title: hello
+---
+"
+end
+
+def string_comment(comment)
+"#{comment} ---
+#{comment} title: hello
+#{comment} ---
+Content"
+end
+
+def string_start_comment(start_comment)
+"#{start_comment}
+  ---
+  title: hello
+  ---
+Content"
+end
+
+def string_start_end_comment(start_comment, end_comment)
+"#{start_comment}
+---
+title: hello
+---
+#{end_comment}
+Content"
 end
