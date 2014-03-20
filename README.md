@@ -61,7 +61,7 @@ Following there is a relation of known syntaxes and their known comment delimite
 | ------ | ------------------- | ----------------------- | ---------------------- |
 | haml   |                     | -#                      | (indentation)          |
 | slim   |                     | /                       | (indentation)          |
-| liquid |                     | &lt;% comment %&gt;           | &lt;% endcomment %&gt;       |
+| liquid |                     | {% comment %}           | {% endcomment %}       |
 | md     |                     |                         |                        |
 | html   |                     | &lt;!--                    | --&gt;                    |
 | coffee | #                   |                         |                        |

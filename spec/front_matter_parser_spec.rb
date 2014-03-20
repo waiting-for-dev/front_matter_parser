@@ -117,7 +117,7 @@ describe FrontMatterParser do
         coffee: ['coffee', '#', nil, nil],
         html: ['html', nil, '<!--', '-->'],
         haml: ['haml', nil, '-#', nil],
-        liquid: ['liquid', nil, '<% comment %>', '<% endcomment %>'],
+        liquid: ['liquid', nil, '{% comment %}', '{% endcomment %}'],
         sass: ['sass', '//', nil, nil],
         scss: ['scss', '//', nil, nil],
         md: ['md', nil, nil, nil],

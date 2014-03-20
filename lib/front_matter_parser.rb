@@ -14,7 +14,7 @@ module FrontMatterParser
     html: [nil, '<!--', '-->'],
     coffee: ['#', nil, nil],
     haml: [nil, '-#', nil],
-    liquid: [nil, '<% comment %>', '<% endcomment %>'],
+    liquid: [nil, '{% comment %}', '{% endcomment %}'],
     sass: ['//', nil, nil],
     scss: ['//', nil, nil],
     md: [nil, nil, nil],
