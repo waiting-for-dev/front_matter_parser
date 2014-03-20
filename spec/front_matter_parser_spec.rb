@@ -8,6 +8,20 @@ describe FrontMatterParser do
   end
 
   describe "#parse" do
+    context "when :comment option is provided" do
+      let(:string) { %Q(
+# ---
+# title: hello
+# ---
+Content) }
+      let(:parsed) { FrontMatterParser.parse(string) }
+
+      it "understand it as single line comment mark for the front matter" do
+        parsed = FrontMatterParser.parse(string, comment: '#')
+        expect(parsed.front_matter).to eq(sample)
+      end
+    end
+
     context "when the string has both front matter and content" do
       let(:string) { %Q(
 ---
