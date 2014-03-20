@@ -117,6 +117,13 @@ describe FrontMatterParser do
         expect(parsed.front_matter).to eq(sample_fm)
       end
     end
+
+    context "when :start_comment is given" do
+      it ":syntax option is ignored" do
+        parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.slim", __FILE__)), syntax: :coffee, start_comment: '/' )
+        expect(parsed.front_matter).to eq(sample_fm)
+      end
+    end
   end
 
   describe "#parse_file" do
