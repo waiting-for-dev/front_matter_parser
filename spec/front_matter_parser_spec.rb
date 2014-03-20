@@ -8,35 +8,6 @@ describe FrontMatterParser do
   end
 
   describe "#parse" do
-    context "when :comment option is provided" do
-      it "understand it as single line comment mark for the front matter" do
-        parsed = FrontMatterParser.parse(string_comment('#'), comment: '#')
-        expect(parsed.front_matter).to eq(sample_fm)
-      end
-
-      context "when :start_comment is provided" do
-        it "raises an ArgumentError" do
-          expect { FrontMatterParser.parse(string_comment('#'), comment: '#', start_comment: '/')}.to raise_error ArgumentError
-        end
-      end
-    end
-
-    context "when :start_comment option is provided" do
-      context "when :end_comment option is not provided" do
-        it "understand :start_comment as the multiline comment mark, closed by indentation, for the front matter" do
-          parsed = FrontMatterParser.parse(string_start_comment('/'), start_comment: '/')
-          expect(parsed.front_matter).to eq(sample_fm)
-        end
-      end
-
-      context "when :end_comment option is provided" do
-        it "understand :start_comment and :end_comment as the multiline comment mark delimiters for the front matter" do
-          parsed = FrontMatterParser.parse(string_start_end_comment('<!--', '-->'), start_comment: '<!--', end_coment: '-->')
-          expect(parsed.front_matter).to eq(sample_fm)
-        end
-      end
-    end
-
     context "when the string has both front matter and content" do
       let(:parsed) { FrontMatterParser.parse(string) }
 
@@ -85,18 +56,41 @@ describe FrontMatterParser do
       end
     end
 
-    context "when the end multiline comment delimiter is provided but not the start one" do
-      it "raises an ArgumentError" do
-        string = %Q(
-<!--
----
-title: hello
----
--->
-Content)
-        expect {FrontMatterParser.parse(string, end_comment: '-->')}.to raise_error(ArgumentError)
+    context "when :comment option is given" do
+      it "takes it as the single line comment mark for the front matter" do
+        parsed = FrontMatterParser.parse(string_comment('#'), comment: '#')
+        expect(parsed.front_matter).to eq(sample_fm)
+      end
+
+      context "when :start_comment is given" do
+        it "raises an ArgumentError" do
+          expect { FrontMatterParser.parse(string_comment('#'), comment: '#', start_comment: '/')}.to raise_error ArgumentError
+        end
       end
     end
+
+    context "when :start_comment option is given" do
+      context "when :end_comment option is not given" do
+        it "takes :start_comment as the mark for a multiline comment closed by indentation for the front matter" do
+          parsed = FrontMatterParser.parse(string_start_comment('/'), start_comment: '/')
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
+      end
+
+      context "when :end_comment option is provided" do
+        it "takes :start_comment and :end_comment as the multiline comment mark delimiters for the front matter" do
+          parsed = FrontMatterParser.parse(string_start_end_comment('<!--', '-->'), start_comment: '<!--', end_coment: '-->')
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
+      end
+    end
+
+    context "when :end_comment option is given but :start_comment is not" do
+      it "raises an ArgumentError" do
+        expect {FrontMatterParser.parse(string_start_end_comment, end_comment: '-->')}.to raise_error(ArgumentError)
+      end
+    end
+
   end
 
   describe "#parse_file" do
