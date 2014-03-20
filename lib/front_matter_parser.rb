@@ -24,13 +24,14 @@ module FrontMatterParser
   #
   # @param string [String] The string to parse
   # @param opts [Hash] Options
+  # @option opts [Symbol] :syntax The syntax used in the string
   # @option opts [String, nil] :comment Single line comment delimiter
   # @option opts [String, nil] :start_comment Start multiline comment delimiter
   # @option opts [String, nil] :end_comment End multiline comment delimiter
-  # @option opts [Symbol] :syntax The syntax used in the string
   # @return [Parsed]
-  # @raise [ArgumentError] If end_comment option is given but not start_comment
-  # @raise [ArgumentError] If comment and start_comment options are given
+  # @raise [ArgumentError] If :syntax is not within {COMMENT_DELIMITERS} keys
+  # @raise [ArgumentError] If :end_comment option is given but not :start_comment
+  # @raise [ArgumentError] If :comment and :start_comment options are given
   # @see COMMENT_DELIMITERS
   def self.parse(string, opts = {})
     opts = {
@@ -40,10 +41,11 @@ module FrontMatterParser
       syntax: nil,
     }.merge(opts)
 
-    raise(ArgumentError, "If you provide the `end_comment` option, you must provide also the `start_comment` option") if (opts[:end_comment] != nil and opts[:start_comment] == nil)
+    raise(ArgumentError, "If you provide :end_comment, you must also provide :start_comment") if (opts[:end_comment] != nil and opts[:start_comment] == nil)
     raise(ArgumentError, "You can not provide :comment and :start_comment options at the same time") if (opts[:start_comment] != nil and opts[:comment] != nil)
 
     if opts[:comment].nil? and opts[:start_comment].nil? and not opts[:syntax].nil?
+      raise(ArgumentError, "#{opts[:syntax]} syntax not known") unless COMMENT_DELIMITERS.has_key?(opts[:syntax])
       opts[:comment], opts[:start_comment], opts[:end_comment] = COMMENT_DELIMITERS[opts[:syntax]]
     end
 
@@ -79,7 +81,7 @@ module FrontMatterParser
     parsed
   end
 
-  # Parses a file into a {Parsed} instance. If autodetect option is `true`, comment delimiters are guessed from the file extension. If it is `false` comment options are taken into consideration. See {COMMENT_DELIMITERS} for a list of known syntaxes and the comment delimiters values.
+  # Parses a file into a {Parsed} instance. If :autodetect option is `true`, comment delimiters are guessed from the file extension. If it is `false` comment options are taken into consideration. See {COMMENT_DELIMITERS} for a list of known syntaxes and the comment delimiters values.
   #
   # @param pathname [String] The path to the file
   # @param opts [Hash] Options
@@ -88,8 +90,8 @@ module FrontMatterParser
   # @option opts [String, nil] :start_comment Start multiline comment delimiter
   # @option opts [String, nil] :end_comment End multiline comment delimiter
   # @return [Parsed]
-  # @raise [ArgumentError] If autodetect option is false, and start_comment option is provided but not end_comment
-  # @raise [ArgumentError] If autodetect option is false, and comment and start_comment options are both provided
+  # @raise [ArgumentError] If :autodetect option is false, and :start_comment option is provided but not :end_comment
+  # @raise [ArgumentError] If :autodetect option is false, and :comment and :start_comment options are both provided
   # @raise [RuntimeError] If the syntax of the file (the extension) is not within the keys of {COMMENT_DELIMITERS}
   # @see COMMENT_DELIMITERS
   def self.parse_file(pathname, opts={})

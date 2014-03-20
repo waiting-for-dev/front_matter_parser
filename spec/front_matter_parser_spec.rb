@@ -108,6 +108,10 @@ describe FrontMatterParser do
             expect(parsed.front_matter).to eq(sample_fm)
           end
         end
+
+        it "raises an ArgumentError if syntax is not whithin COMMENT_DELIMITERS keys" do
+          expect { FrontMatterParser.parse(string, syntax: :foo) }.to raise_error ArgumentError
+        end
       end
     end
 
