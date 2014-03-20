@@ -41,6 +41,20 @@ Content) }
           expect(parsed.front_matter).to eq(sample)
         end
       end
+
+      context "when :end_comment option is provided" do
+        let(:string) { %Q(
+<!--
+  ---
+  title: hello
+  ---
+-->) }
+
+        it "understand :start_comment and :end_comment as the multiline comment mark delimiters for the front matter" do
+          parsed = FrontMatterParser.parse(string, start_comment: '<!--', end_coment: '-->')
+          expect(parsed.front_matter).to eq(sample)
+        end
+      end
     end
 
     context "when the string has both front matter and content" do
