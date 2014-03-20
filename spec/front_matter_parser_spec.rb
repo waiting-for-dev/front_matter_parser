@@ -14,7 +14,6 @@ describe FrontMatterParser do
 # title: hello
 # ---
 Content) }
-      let(:parsed) { FrontMatterParser.parse(string) }
 
       it "understand it as single line comment mark for the front matter" do
         parsed = FrontMatterParser.parse(string, comment: '#')
@@ -24,6 +23,22 @@ Content) }
       context "when :start_comment is provided" do
         it "raises an ArgumentError" do
           expect { FrontMatterParser.parse(string, comment: '#', start_comment: '/')}.to raise_error ArgumentError
+        end
+      end
+    end
+
+    context "when :start_comment option is provided" do
+      context "when :end_comment option is not provided" do
+        let(:string) { %Q(
+/
+  ---
+  title: hello
+  ---
+Content) }
+
+        it "understand :start_comment as the multiline comment mark, closed by indentation, for the front matter" do
+          parsed = FrontMatterParser.parse(string, start_comment: '/')
+          expect(parsed.front_matter).to eq(sample)
         end
       end
     end
@@ -194,7 +209,7 @@ Content)
 ---
 title: hello
 ---
-  
+
 -->
 Content)
     expect(FrontMatterParser.parse(string, start_comment: '<!--', end_comment: '-->').front_matter).to eq(sample)
