@@ -93,17 +93,17 @@ describe FrontMatterParser do
 
     context "when :syntax is given" do
       {
-        slim: [:slim, nil, '/', nil],
-        'coffee script' => [:coffee, '#', nil, nil],
-        html: [:html, nil, '<!--', '-->'],
-        haml: [:haml, nil, '-#', nil],
-        liquid: [:liquid, nil, '<% comment %>', '<% endcomment %>'],
-        sass: [:sass, '//', nil, nil],
-        scss: [:scss, '//', nil, nil],
-        md: [:md, nil, nil, nil],
-      }.each_pair do |syntax, prop|
-        it "can detect a #{syntax} syntax" do
-          parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__)), syntax: prop[0])
+        slim: :slim,
+        'coffee script' => :coffee,
+        html: :html,
+        haml: :haml,
+        liquid: :liquid,
+        sass: :sass,
+        scss: :scss,
+        md: :md,
+      }.each_pair do |name, value|
+        it "can detect a #{name} syntax when its value is #{value}" do
+          parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.#{value}", __FILE__)), syntax: value)
           expect(parsed.front_matter).to eq(sample_fm)
         end
       end
