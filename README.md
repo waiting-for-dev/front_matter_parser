@@ -8,6 +8,10 @@ Add this line to your application's Gemfile:
 
     gem 'front_matter_parser'
 
+or, to get the development version:
+
+    gem 'front_matter_parser', github: 'laMarciana/front_matter_parser'
+
 And then execute:
 
     $ bundle
