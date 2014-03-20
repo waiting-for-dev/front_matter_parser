@@ -20,15 +20,17 @@ module FrontMatterParser
     md: [nil, nil, nil],
   }
 
-  # Parses a string into a {Parsed} instance. For comment options, see {COMMENT_DELIMITERS} values (but they are not limited to those for the known syntaxes).
+  # Parses a string into a {Parsed} instance. Comments marks can be manually indicated with :coment, :start_comment and :end_comment options. If none of them are given and :syntax option is given, they are guessed from {COMMENT_DELIMITERS}
   #
   # @param string [String] The string to parse
   # @param opts [Hash] Options
   # @option opts [String, nil] :comment Single line comment delimiter
   # @option opts [String, nil] :start_comment Start multiline comment delimiter
   # @option opts [String, nil] :end_comment End multiline comment delimiter
+  # @option opts [Symbol] :syntax The syntax used in the string
   # @return [Parsed]
-  # @raise [ArgumentError] If end_comment option is provided but not start_comment
+  # @raise [ArgumentError] If end_comment option is given but not start_comment
+  # @raise [ArgumentError] If comment and start_comment options are given
   # @see COMMENT_DELIMITERS
   def self.parse(string, opts = {})
     opts = {
@@ -87,6 +89,7 @@ module FrontMatterParser
   # @option opts [String, nil] :end_comment End multiline comment delimiter
   # @return [Parsed]
   # @raise [ArgumentError] If autodetect option is false, and start_comment option is provided but not end_comment
+  # @raise [ArgumentError] If autodetect option is false, and comment and start_comment options are both provided
   # @raise [RuntimeError] If the syntax of the file (the extension) is not within the keys of {COMMENT_DELIMITERS}
   # @see COMMENT_DELIMITERS
   def self.parse_file(pathname, opts={})
