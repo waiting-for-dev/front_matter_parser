@@ -137,11 +137,9 @@ describe FrontMatterParser do
         FrontMatterParser.parse_file(File.expand_path('../fixtures/example.slim', __FILE__))
       end
     end
-
-    context "when the file extension is unknown" do
+    context "when the file extension does not match a known syntax" do
       it "raises a RuntimeError" do
-        pending
-        expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__), autodetect: true)}.to raise_error(RuntimeError)
+        expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__))}.to raise_error(RuntimeError)
       end
     end
 
