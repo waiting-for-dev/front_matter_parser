@@ -131,32 +131,23 @@ describe FrontMatterParser do
   end
 
   describe "#parse_file" do
-    context "when autodetect is true" do
-      {
-        slim: ['slim', nil, '/', nil],
-        coffee: ['coffee', '#', nil, nil],
-        html: ['html', nil, '<!--', '-->'],
-        haml: ['haml', nil, '-#', nil],
-        liquid: ['liquid', nil, '{% comment %}', '{% endcomment %}'],
-        sass: ['sass', '//', nil, nil],
-        scss: ['scss', '//', nil, nil],
-        md: ['md', nil, nil, nil],
-      }.each_pair do |format, prop|
-        it "can detect a #{format} file" do
-          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__)), comment: prop[1], start_comment: prop[2], end_comment: prop[3])
-          FrontMatterParser.parse_file(File.expand_path("../fixtures/example.#{prop[0]}", __FILE__), autodetct: true)
-        end
+    context "when the file extension matchs a known syntax" do
+      it "calls #parse with the content of the file and that syntax" do
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.slim', __FILE__)), syntax: :slim)
+        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.slim', __FILE__))
       end
+    end
 
-      context "when the file extension is unknown" do
-        it "raises a RuntimeError" do
-          expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__), autodetect: true)}.to raise_error(RuntimeError)
-        end
+    context "when the file extension is unknown" do
+      it "raises a RuntimeError" do
+        pending
+        expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__), autodetect: true)}.to raise_error(RuntimeError)
       end
     end
 
     context "when autodetect is false" do
       it "calls #parse with the content of the file and given comment delimiters" do
+        pending
         expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.md', __FILE__)), comment: nil, start_comment: nil, end_comment: nil)
         FrontMatterParser.parse_file(File.expand_path('../fixtures/example.md', __FILE__), autodetect: false)
       end

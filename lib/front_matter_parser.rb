@@ -96,21 +96,20 @@ module FrontMatterParser
   # @see COMMENT_DELIMITERS
   def self.parse_file(pathname, opts={})
     opts = {
-      autodetect: true,
       comment: nil,
       start_comment: nil,
       end_comment: nil,
     }.merge(opts)
-    if opts[:autodetect]
+    if opts[:comment].nil? and opts[:start_comment].nil?
       ext = File.extname(pathname)[1 .. -1].to_sym
       raise(RuntimeError, "Comment delimiters for extension #{ext.to_s} not known. Please, call #parse_file without autodetect option and provide comment delimiters.") unless COMMENT_DELIMITERS.has_key?(ext)
-      comment_delimiters = COMMENT_DELIMITERS[ext]
-      opts[:comment] = comment_delimiters[0]
-      opts[:start_comment] = comment_delimiters[1]
-      opts[:end_comment] = comment_delimiters[2]
-    end
-    File.open(pathname) do |file|
-      parse(file.read, comment: opts[:comment], start_comment: opts[:start_comment], end_comment: opts[:end_comment])
+      File.open(pathname) do |file|
+        parse(file.read, syntax: ext)
+      end
+    else
+      File.open(pathname) do |file|
+        parse(file.read, syntax: ext, comment: opts[:comment], start_comment: opts[:start_comment], end_comment: opts[:end_comment])
+      end
     end
   end
 end
