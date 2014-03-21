@@ -108,7 +108,7 @@ module FrontMatterParser
       end
     else
       File.open(pathname) do |file|
-        parse(file.read, syntax: ext, comment: opts[:comment], start_comment: opts[:start_comment], end_comment: opts[:end_comment])
+        parse(file.read, comment: opts[:comment], start_comment: opts[:start_comment], end_comment: opts[:end_comment])
       end
     end
   end

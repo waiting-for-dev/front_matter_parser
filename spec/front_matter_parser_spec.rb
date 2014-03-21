@@ -137,17 +137,17 @@ describe FrontMatterParser do
         FrontMatterParser.parse_file(File.expand_path('../fixtures/example.slim', __FILE__))
       end
     end
+
     context "when the file extension does not match a known syntax" do
       it "raises a RuntimeError" do
         expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__))}.to raise_error(RuntimeError)
       end
     end
 
-    context "when autodetect is false" do
-      it "calls #parse with the content of the file and given comment delimiters" do
-        pending
-        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.md', __FILE__)), comment: nil, start_comment: nil, end_comment: nil)
-        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.md', __FILE__), autodetect: false)
+    context "when :comment option is given" do
+      it "calls #parse with the content of the file and same :comment option" do
+        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.coffee', __FILE__)), comment: '#', start_comment: nil, end_comment: nil)
+        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.coffee', __FILE__), comment: '#')
       end
     end
   end
