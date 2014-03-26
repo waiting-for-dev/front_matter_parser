@@ -113,41 +113,41 @@ describe FrontMatterParser do
           expect { FrontMatterParser.parse(string, syntax: :foo) }.to raise_error ArgumentError
         end
       end
-    end
 
-    context "when :comment is given" do
-      it ":syntax option is ignored" do
-        parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.coffee", __FILE__)), syntax: :slim, comment: '#' )
-        expect(parsed.front_matter).to eq(sample_fm)
+      context "when :comment is given" do
+        it ":syntax is ignored" do
+          parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.coffee", __FILE__)), syntax: :slim, comment: '#' )
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
+      end
+
+      context "when :start_comment is given" do
+        it ":syntax is ignored" do
+          parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.slim", __FILE__)), syntax: :coffee, start_comment: '/' )
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
       end
     end
 
-    context "when :start_comment is given" do
-      it ":syntax option is ignored" do
-        parsed = FrontMatterParser.parse(File.read(File.expand_path("../fixtures/example.slim", __FILE__)), syntax: :coffee, start_comment: '/' )
-        expect(parsed.front_matter).to eq(sample_fm)
+    describe "#parse_file" do
+      context "when the file extension matchs a known syntax" do
+        it "calls #parse with the content of the file and that syntax" do
+          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.slim', __FILE__)), syntax: :slim)
+          FrontMatterParser.parse_file(File.expand_path('../fixtures/example.slim', __FILE__))
+        end
       end
-    end
-  end
 
-  describe "#parse_file" do
-    context "when the file extension matchs a known syntax" do
-      it "calls #parse with the content of the file and that syntax" do
-        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.slim', __FILE__)), syntax: :slim)
-        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.slim', __FILE__))
+      context "when the file extension does not match a known syntax" do
+        it "raises a RuntimeError" do
+          expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__))}.to raise_error(RuntimeError)
+        end
       end
-    end
 
-    context "when the file extension does not match a known syntax" do
-      it "raises a RuntimeError" do
-        expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__))}.to raise_error(RuntimeError)
-      end
-    end
-
-    context "when :comment option is given" do
-      it "calls #parse with the content of the file and same :comment option" do
-        expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.coffee', __FILE__)), comment: '#', start_comment: nil, end_comment: nil)
-        FrontMatterParser.parse_file(File.expand_path('../fixtures/example.coffee', __FILE__), comment: '#')
+      context "when :comment option is given" do
+        it "calls #parse with the content of the file and same :comment option" do
+          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.coffee', __FILE__)), comment: '#', start_comment: nil, end_comment: nil)
+          FrontMatterParser.parse_file(File.expand_path('../fixtures/example.coffee', __FILE__), comment: '#')
+        end
       end
     end
   end
@@ -230,14 +230,14 @@ Content)
 end
 
 def string
-"---
+  "---
 title: hello
 ---
 Content"
 end
 
 def string_no_front_matter
-"Content"
+  "Content"
 end
 
 def string_no_content
@@ -248,14 +248,14 @@ title: hello
 end
 
 def string_comment(comment)
-"#{comment} ---
-#{comment} title: hello
-#{comment} ---
+  "#{comment} ---
+  #{comment} title: hello
+  #{comment} ---
 Content"
 end
 
 def string_start_comment(start_comment)
-"#{start_comment}
+  "#{start_comment}
   ---
   title: hello
   ---
@@ -263,10 +263,10 @@ Content"
 end
 
 def string_start_end_comment(start_comment, end_comment)
-"#{start_comment}
+  "#{start_comment}
 ---
 title: hello
 ---
-#{end_comment}
+  #{end_comment}
 Content"
 end
