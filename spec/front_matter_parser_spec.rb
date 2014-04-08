@@ -122,6 +122,54 @@ describe FrontMatterParser do
   end
 
   describe "#parse_file" do
+    context "when the file has both front matter and content" do
+      let(:parsed) { FrontMatterParser.parse_file(file_fixture(string), comment: '') }
+
+      it "parses the front matter as a hash" do
+        expect(parsed.front_matter).to eq(sample_fm)
+      end
+
+      it "parses the content as a string" do
+        expect(parsed.content).to eq("Content")
+      end
+    end
+
+    context "when the file only has front matter" do
+      let(:parsed) { FrontMatterParser.parse_file(file_fixture(string_no_content), comment: '') }
+
+      it "parses the front matter as a hash" do
+        expect(parsed.front_matter).to eq(sample_fm)
+      end
+
+      it "parses the content as an empty string" do
+        expect(parsed.content).to eq('')
+      end
+    end
+
+    context "when the file has an empty front matter is supplied" do
+      let(:parsed) { FrontMatterParser.parse_file(file_fixture(string_no_front_matter), comment: '') }
+
+      it "parses the front matter as an empty hash" do
+        expect(parsed.front_matter).to eq({})
+      end
+
+      it "parses the content as the whole string" do
+        expect(parsed.content).to eq("Content")
+      end
+    end
+
+    context "when the file has no content" do
+      let(:parsed) { FrontMatterParser.parse_file(file_fixture(''), comment: '') }
+
+      it "parses the front matter as an empty hash" do
+        expect(parsed.front_matter).to eq({})
+      end
+
+      it  "parses the content as an empty string" do
+        expect(parsed.content).to eq('')
+      end
+    end
+
     context "when :comment option is given" do
       it "takes it as the single line comment mark for the front matter" do
         parsed = FrontMatterParser.parse_file(file_fixture(string_comment('#')), comment: '#')
