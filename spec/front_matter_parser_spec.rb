@@ -159,6 +159,13 @@ describe FrontMatterParser do
         end
       end
     end
+
+    context "when :end_comment option is given but :start_comment is not" do
+      it "raises an ArgumentError" do
+        expect {FrontMatterParser.parse_file(file_fixture(string_start_end_comment), end_comment: '-->')}.to raise_error(ArgumentError)
+      end
+    end
+
   end
 end
 
