@@ -46,7 +46,7 @@ module FrontMatterParser
     raise(ArgumentError, "You can not provide :comment and :start_comment options at the same time") if (opts[:start_comment] != nil and opts[:comment] != nil)
 
     if opts[:comment].nil? and opts[:start_comment].nil? and not opts[:syntax].nil?
-      raise(ArgumentError, "#{opts[:syntax]} syntax not known") unless COMMENT_DELIMITERS.has_key?(opts[:syntax])
+      raise(ArgumentError, "#{opts[:syntax]} syntax not known. Please call parse providing manually comment delimiters for that syntax.") unless COMMENT_DELIMITERS.has_key?(opts[:syntax])
       opts[:comment], opts[:start_comment], opts[:end_comment] = COMMENT_DELIMITERS[opts[:syntax]]
     end
 
@@ -104,7 +104,7 @@ module FrontMatterParser
     if opts[:comment].nil? and opts[:start_comment].nil?
       ext = File.extname(pathname)[1 .. -1]
       ext = ext.to_sym unless ext.nil?
-      raise(RuntimeError, "Comment delimiters for extension #{ext.to_s} not known. Please, call #parse_file without autodetect option and provide comment delimiters.") unless COMMENT_DELIMITERS.has_key?(ext)
+      raise(RuntimeError, "Comment delimiters for extension #{ext.to_s} not known. Please, call #parse_file providing manually comment delimiters for that extension.") unless COMMENT_DELIMITERS.has_key?(ext)
       File.open(pathname) do |file|
         parse(file.read, syntax: ext)
       end
