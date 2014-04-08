@@ -128,25 +128,18 @@ describe FrontMatterParser do
         end
       end
     end
+  end
 
-    describe "#parse_file" do
-      context "when the file extension matchs a known syntax" do
-        it "calls #parse with the content of the file and that syntax" do
-          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.slim', __FILE__)), syntax: :slim)
-          FrontMatterParser.parse_file(File.expand_path('../fixtures/example.slim', __FILE__))
-        end
+  describe "#parse_file" do
+    context "when :comment option is given" do
+      it "takes it as the single line comment mark for the front matter" do
+        parsed = FrontMatterParser.parse_file(file_fixture(string_comment('#')), comment: '#')
+        expect(parsed.front_matter).to eq(sample_fm)
       end
 
-      context "when the file extension does not match a known syntax" do
-        it "raises a RuntimeError" do
-          expect {FrontMatterParser.parse_file(File.expand_path('../fixtures/example.foo', __FILE__))}.to raise_error(RuntimeError)
-        end
-      end
-
-      context "when :comment option is given" do
-        it "calls #parse with the content of the file and same :comment option" do
-          expect(FrontMatterParser).to receive(:parse).with(File.read(File.expand_path('../fixtures/example.coffee', __FILE__)), comment: '#', start_comment: nil, end_comment: nil)
-          FrontMatterParser.parse_file(File.expand_path('../fixtures/example.coffee', __FILE__), comment: '#')
+      context "when :start_comment is given" do
+        it "raises an ArgumentError" do
+          expect { FrontMatterParser.parse_file(file_fixture(string_comment('#')), comment: '#', start_comment: '/')}.to raise_error ArgumentError
         end
       end
     end
@@ -269,4 +262,11 @@ title: hello
 ---
   #{end_comment}
 Content"
+end
+
+def file_fixture(string)
+  file = Tempfile.new('foo')
+  file.write(string)
+  file.rewind
+  file.path
 end
