@@ -166,6 +166,27 @@ describe FrontMatterParser do
       end
     end
 
+    context "when :comment and :start_comment are not given" do
+      {
+        slim: :slim,
+        'coffee script' => :coffee,
+        html: :html,
+        haml: :haml,
+        liquid: :liquid,
+        sass: :sass,
+        scss: :scss,
+        md: :md,
+      }.each_pair do |name, value|
+        it "can detect a #{name} syntax file when its extension is #{value}" do
+          parsed = FrontMatterParser.parse_file(File.expand_path("../fixtures/example.#{value}", __FILE__))
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
+      end
+
+      it "raises an ArgumentError if the file extension is not whithin COMMENT_DELIMITERS keys" do
+        expect { FrontMatterParser.parse_file(File.expand_path("../fixtures/example.foo, __FILE__")) }.to raise_error RuntimeError
+      end
+    end
   end
 end
 
