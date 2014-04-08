@@ -217,6 +217,10 @@ describe FrontMatterParser do
       it "raises an ArgumentError if the file extension is not whithin COMMENT_DELIMITERS keys" do
         expect { FrontMatterParser.parse_file(File.expand_path("../fixtures/example.foo, __FILE__")) }.to raise_error RuntimeError
       end
+
+      it "raises an ArgumentError if the file has no extension" do
+        expect { FrontMatterParser.parse_file(File.expand_path("../fixtures/example, __FILE__")) }.to raise_error RuntimeError
+      end
     end
   end
 end
