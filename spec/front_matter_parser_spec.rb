@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe FrontMatterParser do
   let(:sample_fm) { {'title' => 'hello'} }
+  let(:sample_c) { 'Content' }
 
   it 'has a version number' do
     expect(FrontMatterParser::VERSION).to_not be_nil
@@ -16,7 +17,7 @@ describe FrontMatterParser do
       end
 
       it "parses the content as a string" do
-        expect(parsed.content).to eq("Content")
+        expect(parsed.content).to eq(sample_c)
       end
     end
 
@@ -40,7 +41,7 @@ describe FrontMatterParser do
       end
 
       it "parses the content as the whole string" do
-        expect(parsed.content).to eq("Content")
+        expect(parsed.content).to eq(sample_c)
       end
     end
 
@@ -130,7 +131,7 @@ describe FrontMatterParser do
       end
 
       it "parses the content as a string" do
-        expect(parsed.content).to eq("Content")
+        expect(parsed.content).to eq(sample_c)
       end
     end
 
@@ -154,7 +155,7 @@ describe FrontMatterParser do
       end
 
       it "parses the content as the whole string" do
-        expect(parsed.content).to eq("Content")
+        expect(parsed.content).to eq(sample_c)
       end
     end
 
