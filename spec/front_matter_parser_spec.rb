@@ -143,6 +143,22 @@ describe FrontMatterParser do
         end
       end
     end
+
+    context "when :start_comment option is given" do
+      context "when :end_comment option is not given" do
+        it "takes :start_comment as the mark for a multiline comment closed by indentation for the front matter" do
+          parsed = FrontMatterParser.parse_file(file_fixture(string_start_comment('/')), start_comment: '/')
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
+      end
+
+      context "when :end_comment option is provided" do
+        it "takes :start_comment and :end_comment as the multiline comment mark delimiters for the front matter" do
+          parsed = FrontMatterParser.parse_file(file_fixture(string_start_end_comment('<!--', '-->')), start_comment: '<!--', end_coment: '-->')
+          expect(parsed.front_matter).to eq(sample_fm)
+        end
+      end
+    end
   end
 end
 
