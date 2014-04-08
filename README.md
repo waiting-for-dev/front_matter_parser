@@ -68,6 +68,7 @@ Following there is a relation of known syntaxes and their known comment delimite
 | liquid |                     | {% comment %}           | {% endcomment %}       |
 | md     |                     |                         |                        |
 | html   |                     | &lt;!--                    | --&gt;                    |
+| erb    |                     | &lt;%#                     | %&gt;                     |
 | coffee | #                   |                         |                        |
 | sass   | //                  |                         |                        |
 | scss   | //                  |                         |                        |

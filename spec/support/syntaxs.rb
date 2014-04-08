@@ -9,5 +9,6 @@ def syntaxs
     sass: :sass,
     scss: :scss,
     md: :md,
+    erb: :erb,
   }
 end

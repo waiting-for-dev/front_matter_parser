@@ -12,6 +12,7 @@ module FrontMatterParser
   COMMENT_DELIMITERS = {
     slim: [nil, '/', nil],
     html: [nil, '<!--', '-->'],
+    erb: [nil, '<%#', '%>'],
     coffee: ['#', nil, nil],
     haml: [nil, '-#', nil],
     liquid: [nil, '{% comment %}', '{% endcomment %}'],
