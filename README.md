@@ -38,7 +38,7 @@ You can parse it:
 
 ```ruby
 parsed = FrontMatterParser.parse_file('example.md')
-parsed.front_matter #=> {'title' => 'Hello World'}
+parsed.front_matter #=> {'title' => 'Hello World', 'category' => 'Greetings'}
 parsed.content #=> 'Some actual content'
 ```
 
@@ -50,7 +50,7 @@ parsed['category'] #=> 'Greetings'
 
 ### Syntax autodetection
 
-`FrontMatterParser` detects the syntax of a file by its extension and suppose that the front matter is within that syntax comments delimiters.
+`FrontMatterParser` detects the syntax of a file by its extension and it supposes that the front matter is within that syntax comments delimiters.
 
 Given a file `example.haml`:
 
@@ -62,7 +62,7 @@ Given a file `example.haml`:
 Content
 ```
 
-The `-#` and the indentation enclose the front matter as a comment. `FrontMatterParser` is aware of it and you can simply do:
+The `-#` and the indentation enclose the front matter as a comment. `FrontMatterParser` is aware of that, so you can simply do:
 
 ```ruby
 title = FrontMatterParser.parse_file('example.haml')['title'] #=> 'Hello'
@@ -84,7 +84,7 @@ Following there is a relation of known syntaxes and their known comment delimite
 | scss   | //                  |                         |                        |
 </pre>
 
-You can provide your own providing options for single line comment delimiter (`:comment`) or start multiline comment (`:start_comment`) and end multiline comment (`:end_comment`) delimiters. If `:start_comment` is provided but it isn't `:end_comment`, then it is supposed that the multiline comment is ended by indentation.
+For unknown syntaxes or alternative ones, you can provide your own single line comment delimiter with the `:comment` option, or multiline comment delimiters with `:start_comment` and `:end_comment`. If `:start_comment` is provided but it isn't `:end_comment`, then it is supposed that the multiline comment is ended by indentation.
 
 ```ruby
 FrontMatterParser.parse_file('example.haml', start_comment: '<!--', end_comment: '-->') # start and end multiline comment delimiters
