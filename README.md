@@ -26,21 +26,27 @@ Front matters must be between two lines with three dashes `---`.
 
 Given a file `example.md`:
 
-    ---
-    title: Hello World
-    category: Greetings
-    ---
-    Some actual content
+```md
+---
+title: Hello World
+category: Greetings
+---
+Some actual content
+```
 
 You can parse it:
 
-    parsed = FrontMatterParser.parse_file('example.md')
-    parsed.front_matter #=> {'title' => 'Hello World'}
-    parsed.content #=> 'Some actual content'
+```ruby
+parsed = FrontMatterParser.parse_file('example.md')
+parsed.front_matter #=> {'title' => 'Hello World'}
+parsed.content #=> 'Some actual content'
+```
 
 You can apply directly `[]` method to get a front matter value:
 
-    parsed['category'] #=> 'Greetings'
+```ruby
+parsed['category'] #=> 'Greetings'
+```
 
 ### Syntax autodetection
 
@@ -48,15 +54,19 @@ You can apply directly `[]` method to get a front matter value:
 
 Given a file `example.haml`:
 
-    -#
-       ---
-       title: Hello
-       ---
-    Content
+```haml
+-#
+   ---
+   title: Hello
+   ---
+Content
+```
 
 The `-#` and the indentation enclose the front matter as a comment. `FrontMatterParser` is aware of it and you can simply do:
 
-    title = FrontMatterParser.parse_file('example.haml')['title'] #=> 'Hello'
+```ruby
+title = FrontMatterParser.parse_file('example.haml')['title'] #=> 'Hello'
+```
 
 Following there is a relation of known syntaxes and their known comment delimiters:
 
@@ -76,21 +86,27 @@ Following there is a relation of known syntaxes and their known comment delimite
 
 You can provide your own providing options for single line comment delimiter (`:comment`) or start multiline comment (`:start_comment`) and end multiline comment (`:end_comment`) delimiters. If `:start_comment` is provided but it isn't `:end_comment`, then it is supposed that the multiline comment is ended by indentation.
 
-    FrontMatterParser.parse_file('example.haml', start_comment: '<!--', end_comment: '-->') # start and end multiline comment delimiters
-    FrontMatterParser.parse_file('example.slim', start_comment: '/!') # multiline comment closed by indentation
-    FrontMatterParser.parse_file('example.foo', comment: '#') # single line comments
+```ruby
+FrontMatterParser.parse_file('example.haml', start_comment: '<!--', end_comment: '-->') # start and end multiline comment delimiters
+FrontMatterParser.parse_file('example.slim', start_comment: '/!') # multiline comment closed by indentation
+FrontMatterParser.parse_file('example.foo', comment: '#') # single line comments
+```
 
 ### Parsing a string
 
 You can as well parse a string, providing manually the `syntax`:
 
-    string = File.read('example.slim')
-    FrontMatterParser.parse(string, syntax: :slim)
+```ruby
+string = File.read('example.slim')
+FrontMatterParser.parse(string, syntax: :slim)
+```
 
 or the comment delimiters:
 
-    string = File.read('example.slim')
-    FrontMatterParser.parse(string, start_comment '/!')
+```ruby
+string = File.read('example.slim')
+FrontMatterParser.parse(string, start_comment: '/!')
+```
 
 ## Contributing
 
