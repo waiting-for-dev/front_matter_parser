@@ -10,7 +10,7 @@ Add this line to your application's Gemfile:
 
 or, to get the development version:
 
-    gem 'front_matter_parser', github: 'laMarciana/front_matter_parser'
+    gem 'front_matter_parser', github: 'waiting-for-dev/front_matter_parser'
 
 And then execute:
 
