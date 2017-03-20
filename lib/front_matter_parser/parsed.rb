@@ -1,18 +1,29 @@
-# Parsed is the result of calling {FrontMatterParser.parse} or {FrontMatterParser.parse_file} in {FrontMatterParser}. It keeps the front matter and the content parsed and it has some useful methods to work with them.
-class FrontMatterParser::Parsed
-  # @!attribute [rw] front_matter
-  #   @return [Hash{String => String, Array, Hash}] the parsed front matter
-  # @!attribute [rw] content
-  #   @return [String] the parsed content
-  attr_accessor :front_matter, :content
+# frozen_string_literal: true
 
-  alias_method :to_hash, :front_matter
+module FrontMatterParser
+  # Result of parsing front matter and content from a string
+  class Parsed
+    # @!attribute [rw] front_matter
+    # @see #initialize
+    attr_reader :front_matter
 
-  # Returns the front matter value for the given key
-  #
-  # @param key [String] The key of the front matter
-  # @return [String, Array, Hash] The value of the front matter for the given key
-  def [](key)
-    @front_matter[key]
+    # @!attribute [rw] content
+    # @see #initialize
+    attr_reader :content
+
+    # @param front_matter [Hash] parsed front_matter
+    # @param content [String] parsed content
+    def initialize(front_matter:, content:)
+      @front_matter = front_matter
+      @content = content
+    end
+
+    # Returns front matter value for given key
+    #
+    # @param key [String] key for desired value
+    # @return [String, Array, # Hash] desired value
+    def [](key)
+      front_matter[key]
+    end
   end
 end

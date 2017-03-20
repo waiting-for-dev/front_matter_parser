@@ -1,28 +1,18 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-module FrontMatterParser
-  describe Parsed do
+describe FrontMatterParser::Parsed do
+  let(:front_matter) { { 'title' => 'hello' } }
+  let(:content) { 'Content' }
 
-    let(:sample) { {'title' => 'hello'} }
+  subject(:parsed) do
+    described_class.new(front_matter: front_matter, content: content)
+  end
 
-    let(:string) { %Q(
----
-title: hello
----
-Content) }
-
-    let(:parsed) { FrontMatterParser.parse(string) }
-
-    describe "#to_hash" do
-      it "returns @front_matter" do
-        expect(parsed.to_hash).to eq(sample)
-      end
-    end
-
-    describe "#[]" do
-      it "returns the front matter value for the given key" do
-        expect(parsed['title']).to eq('hello')
-      end
+  describe '#[]' do
+    it 'returns front_matter value for given key' do
+      expect(parsed['title']).to eq('hello')
     end
   end
 end
