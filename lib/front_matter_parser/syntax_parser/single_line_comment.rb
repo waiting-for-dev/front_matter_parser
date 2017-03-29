@@ -29,6 +29,7 @@ module FrontMatterParser
       end
 
       # @see Factorizable
+      # :nocov:
       def self.delimiters
         raise NotImplementedError
       end
