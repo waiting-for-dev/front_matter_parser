@@ -147,4 +147,10 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
       expect(parsed).to be_parsed_result_with(front_matter, content)
     end
   end
+
+  it 'returns nil if no front matter is found' do
+    string = 'Content'
+
+    expect(FrontMatterParser::SyntaxParser::Coffee.new.call(string)).to be_nil
+  end
 end
