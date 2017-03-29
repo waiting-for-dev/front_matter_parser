@@ -1,4 +1,8 @@
+require: rubocop-rspec
 AllCops:
   TargetRubyVersion: 2.4
-LambdaCall:
-  Enabled: false
+RSpec/NestedGroups:
+  Max: 3
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*.rb"
