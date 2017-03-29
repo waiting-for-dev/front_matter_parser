@@ -3,10 +3,10 @@
 require 'spec_helper'
 
 describe FrontMatterParser::SyntaxParser::MultiLineComment do
+  subject(:parsed) { FrontMatterParser::Parser.new(syntax).call(string) }
+
   let(:front_matter) { { 'title' => 'hello', 'author' => 'me' } }
   let(:content) { "Content\n" }
-
-  subject(:parsed) { FrontMatterParser::Parser.new(syntax).call(string) }
 
   context 'html' do
     let(:syntax) { :html }

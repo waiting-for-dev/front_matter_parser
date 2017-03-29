@@ -1,12 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe FrontMatterParser::Parser do
   let(:front_matter) { { 'title' => 'hello' } }
   let(:content) { "Content\n" }
-
-  it 'has a version number' do
-    expect(FrontMatterParser::VERSION).to_not be_nil
-  end
 
   describe '#call' do
     let(:string) do

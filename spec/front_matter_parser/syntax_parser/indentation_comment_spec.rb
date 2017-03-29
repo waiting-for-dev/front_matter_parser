@@ -3,10 +3,10 @@
 require 'spec_helper'
 
 describe FrontMatterParser::SyntaxParser::IndentationComment do
+  subject(:parsed) { FrontMatterParser::Parser.new(syntax).call(string) }
+
   let(:front_matter) { { 'title' => 'hello', 'author' => 'me' } }
   let(:content) { "Content\n" }
-
-  subject(:parsed) { FrontMatterParser::Parser.new(syntax).call(string) }
 
   context 'slim' do
     let(:syntax) { :slim }
