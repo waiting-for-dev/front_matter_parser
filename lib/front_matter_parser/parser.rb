@@ -4,19 +4,19 @@ module FrontMatterParser
   # Entry point to parse a front matter from a string or file.
   class Parser
     # @!attribute [r] syntax_parser
-    # Current syntax parser in use. See {#initialize} for details
+    # Current syntax parser in use. See {SyntaxParser}
     attr_reader :syntax_parser
 
     # @!attribute [r] loader
-    # Current loader in use. See {#initialize} for details
+    # Current loader in use. See {Loader} for details
     attr_reader :loader
 
     # Parses front matter and content from given pathname, inferring syntax from
     # the extension or, otherwise, using syntax_parser argument.
     #
     # @param pathname [String]
-    # @param syntax_parser [Object] see {#syntax_parser}
-    # @param loader [Object] see {#loader}
+    # @param syntax_parser [Object] see {SyntaxParser}
+    # @param loader [Object] see {Loader}
     # @return [Parsed] parsed front matter and content
     def self.parse_file(pathname, syntax_parser: nil, loader: Loader::Yaml)
       syntax_parser ||= syntax_from_pathname(pathname)
@@ -44,7 +44,8 @@ module FrontMatterParser
     #   details.
     #
     #   - A symbol, in which case it refers to a parser
-    #   `FrontMatterParser::SyntaxParser::#{symbol.capitalize}`
+    #   `FrontMatterParser::SyntaxParser::#{symbol.capitalize}` which can be
+    #   initialized without arguments
     #
     # @param loader [Object] Front matter loader to use. See {Loader} for
     # details.
@@ -72,7 +73,7 @@ module FrontMatterParser
     private
 
     def infer_syntax_parser(syntax_parser)
-      return syntax_parser.new unless syntax_parser.is_a?(Symbol)
+      return syntax_parser unless syntax_parser.is_a?(Symbol)
       self.class.syntax_parser_from_symbol(syntax_parser)
     end
   end

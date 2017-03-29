@@ -19,7 +19,7 @@ describe FrontMatterParser::Parser do
     end
 
     it 'parses using given parser' do
-      parser = described_class.new(FrontMatterParser::SyntaxParser::Html)
+      parser = described_class.new(FrontMatterParser::SyntaxParser::Html.new)
 
       parsed = parser.call(string)
 
@@ -64,6 +64,7 @@ describe FrontMatterParser::Parser do
   end
 
   describe '::parse_file' do
+    # :reek:UtilityFunction
     def pathname(file)
       File.expand_path("../../fixtures/#{file}", __FILE__)
     end
@@ -82,7 +83,7 @@ describe FrontMatterParser::Parser do
       pathname = pathname('example')
 
       parsed = described_class.parse_file(
-        pathname, syntax_parser: FrontMatterParser::SyntaxParser::Html
+        pathname, syntax_parser: FrontMatterParser::SyntaxParser::Html.new
       )
 
       expect(parsed).to be_parsed_result_with(front_matter, content)
