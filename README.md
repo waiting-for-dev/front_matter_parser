@@ -1,6 +1,8 @@
 # FrontMatterParser
 
-FrontMatterParser is a library to parse files or strings with YAML front matters. It can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.
+FrontMatterParser is a library to parse a front matter from strings or files.
+It allows writing syntactically correct source files, marking front matters as
+comments in the source file language.
 
 ## Installation
 
@@ -37,12 +39,12 @@ Some actual content
 You can parse it:
 
 ```ruby
-parsed = FrontMatterParser.parse_file('example.md')
+parsed = FrontMatterParser::Parser.parse_file('example.md')
 parsed.front_matter #=> {'title' => 'Hello World', 'category' => 'Greetings'}
 parsed.content #=> 'Some actual content'
 ```
 
-You can apply directly `[]` method to get a front matter value:
+You can directly apply `[]` method to get a front matter value:
 
 ```ruby
 parsed['category'] #=> 'Greetings'
@@ -65,7 +67,7 @@ Content
 The `-#` and the indentation enclose the front matter as a comment. `FrontMatterParser` is aware of that, so you can simply do:
 
 ```ruby
-title = FrontMatterParser.parse_file('example.haml')['title'] #=> 'Hello'
+title = FrontMatterParser::Parser.parse_file('example.haml')['title'] #=> 'Hello'
 ```
 
 Following there is a relation of known syntaxes and their known comment delimiters:
@@ -84,28 +86,51 @@ Following there is a relation of known syntaxes and their known comment delimite
 | scss   | //                  |                         |                        |
 </pre>
 
-For unknown syntaxes or alternative ones, you can provide your own single line comment delimiter with the `:comment` option, or multiline comment delimiters with `:start_comment` and `:end_comment`. If `:start_comment` is provided but it isn't `:end_comment`, then it is supposed that the multiline comment is ended by indentation.
-
-```ruby
-FrontMatterParser.parse_file('example.haml', start_comment: '<!--', end_comment: '-->') # start and end multiline comment delimiters
-FrontMatterParser.parse_file('example.slim', start_comment: '/!') # multiline comment closed by indentation
-FrontMatterParser.parse_file('example.foo', comment: '#') # single line comments
-```
-
 ### Parsing a string
 
 You can as well parse a string, providing manually the `syntax`:
 
 ```ruby
 string = File.read('example.slim')
-FrontMatterParser.parse(string, syntax: :slim)
+FrontMatterParser::Parser.new(:slim).parse(string)
 ```
 
-or the comment delimiters:
+### Custom parsers
+
+You can implement your own parsers for other syntaxes. Most of the times, they will need to parse a syntax with single line comments, multi line comments or closed by indentation comments. For these cases, this library provides helper factory methods. For example, if they weren't already implemented, you could do something like:
 
 ```ruby
-string = File.read('example.slim')
-FrontMatterParser.parse(string, start_comment: '/!')
+SlimParser = FrontMatterParser::SyntaxParser::IndentationComment['/']
+CoffeeParser = FrontMatterParser::SyntaxParser::SingleLineComment['#']
+Html = FrontMatterParser::SyntaxParser::MultiLineComment['<!--', '-->']
+```
+
+You would use them like this:
+
+```ruby
+slim_parser = SlimParser.new
+
+# For a file
+FrontMatterParser::Parser.parse_file('example.slim', syntax_parser: slim_parser)
+
+# For a string
+FrontMatterParser::Parser.new(slim_parser).parse(string)
+```
+
+For more complex scenarios, a parser can be anything responding to `call(string)` which needs to respond a hash interface with `:front_matter` and `:content` keys, or `nil` if no front matter is found.
+
+### Custom loaders
+
+Once a front matter is matched from a string, it is loaded as if it were a YAML text. However, you can also implement your own loaders. They just need to implement a `call(string)` method. You would use it like the following:
+
+```ruby
+json_loader = ->(string) { JSON.load(string) }
+
+# For a file
+FrontMatterParser::Parser.parse_file('example.md', loader: json_loader)
+
+# For a string
+FrontMatterParser::Parser.new(:md, loader: json_loader).parse(string)
 ```
 
 ## Contributing
