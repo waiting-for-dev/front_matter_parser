@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module FrontMatterParser
   module SyntaxParser
     # Parser for syntaxes which each comment is for a single line
