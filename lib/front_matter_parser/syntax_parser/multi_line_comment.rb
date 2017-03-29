@@ -15,7 +15,7 @@ module FrontMatterParser
       end
 
       # @see SyntaxParser
-      def match(string)
+      def call(string)
         string.match(regexp)
       end
 

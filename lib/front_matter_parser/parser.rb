@@ -59,7 +59,7 @@ module FrontMatterParser
     # @return [Parsed] parsed front matter and content
     # :reek:FeatureEnvy
     def call(string)
-      match = syntax_parser.match(string)
+      match = syntax_parser.call(string)
       front_matter, content =
         if match
           [loader.call(match[:front_matter]), match[:content]]

@@ -15,7 +15,7 @@ module FrontMatterParser
       end
 
       # @see SyntaxParser
-      def match(string)
+      def call(string)
         match = string.match(regexp)
         if match
           front_matter = self.class.remove_delimiter(match[:front_matter])

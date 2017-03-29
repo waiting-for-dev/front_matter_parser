@@ -7,7 +7,7 @@ require 'front_matter_parser/syntax_parser/single_line_comment'
 
 module FrontMatterParser
   # This module includes parsers for different syntaxes. Parsers can be
-  # initialized without arguments. They respond to an instance method `#match`,
+  # initialized without arguments. They respond to instance method `#call`,
   # which takes a string as argument and responds with a hash interface with
   # `:front_matter` and `:content` keys, or `nil` if no front matter is found.
   #
