@@ -1,8 +1,6 @@
 # FrontMatterParser
 
-FrontMatterParser is a library to parse a front matter from strings or files.
-It allows writing syntactically correct source files, marking front matters as
-comments in the source file language.
+FrontMatterParser is a library to parse a front matter from strings or files. It allows writing syntactically correct source files, marking front matters as comments in the source file language.
 
 ## Installation
 
@@ -26,7 +24,7 @@ Or install it yourself as:
 
 Front matters must be between two lines with three dashes `---`.
 
-Given a file `example.md`:
+For example, given a file `example.md`:
 
 ```md
 ---
@@ -52,9 +50,9 @@ parsed['category'] #=> 'Greetings'
 
 ### Syntax autodetection
 
-`FrontMatterParser` detects the syntax of a file by its extension and it supposes that the front matter is within that syntax comments delimiters.
+`FrontMatterParser` detects the syntax of a file by its extension and it supposes that the front matter is within that syntax comment delimiters.
 
-Given a file `example.haml`:
+For example, given a file `example.haml`:
 
 ```haml
 -#
@@ -88,7 +86,7 @@ Following there is a relation of known syntaxes and their known comment delimite
 
 ### Parsing a string
 
-You can as well parse a string, providing manually the `syntax`:
+You can as well parse a string providing manually the syntax:
 
 ```ruby
 string = File.read('example.slim')
@@ -100,9 +98,9 @@ FrontMatterParser::Parser.new(:slim).parse(string)
 You can implement your own parsers for other syntaxes. Most of the times, they will need to parse a syntax with single line comments, multi line comments or closed by indentation comments. For these cases, this library provides helper factory methods. For example, if they weren't already implemented, you could do something like:
 
 ```ruby
-SlimParser = FrontMatterParser::SyntaxParser::IndentationComment['/']
 CoffeeParser = FrontMatterParser::SyntaxParser::SingleLineComment['#']
-Html = FrontMatterParser::SyntaxParser::MultiLineComment['<!--', '-->']
+HtmlParser = FrontMatterParser::SyntaxParser::MultiLineComment['<!--', '-->']
+SlimParser = FrontMatterParser::SyntaxParser::IndentationComment['/']
 ```
 
 You would use them like this:
@@ -117,7 +115,7 @@ FrontMatterParser::Parser.parse_file('example.slim', syntax_parser: slim_parser)
 FrontMatterParser::Parser.new(slim_parser).parse(string)
 ```
 
-For more complex scenarios, a parser can be anything responding to `call(string)` which needs to respond a hash interface with `:front_matter` and `:content` keys, or `nil` if no front matter is found.
+For more complex scenarios, a parser can be anything responding to a method `call(string)` which returns a hash interface with `:front_matter` and `:content` keys, or `nil` if no front matter is found.
 
 ### Custom loaders
 
@@ -133,6 +131,24 @@ FrontMatterParser::Parser.parse_file('example.md', loader: json_loader)
 FrontMatterParser::Parser.new(:md, loader: json_loader).parse(string)
 ```
 
+## Development
+
+There are docker and docker-compose files configured to create a development environment for this gem. So, if you use Docker you only need to run:
+
+`docker-compose up -d`
+
+An then, for example:
+
+`docker-compose exec app rspec`
+
+This gem uses [overcommit](https://github.com/brigade/overcommit) to execute some code review engines. If you submit a pull request, it will be executed in the CI process. In order to set it up, you need to do:
+
+```ruby
+bundle install --gemfile=.overcommit_gems.rb
+overcommit --sign
+overcommit --run # To test if it works
+```
+
 ## Contributing
 
 1. Fork it
@@ -144,12 +160,6 @@ FrontMatterParser::Parser.new(:md, loader: json_loader).parse(string)
 ## Release Policy
 
 `front_matter_parser` follows the principles of [semantic versioning](http://semver.org/).
-
-## To Do
-
-* Add more known syntaxes.
-* Allow configuration of global front matter delimiters. It would be easy, but I'm not sure if too useful.
-* Allow different formats (as JSON). Again, I'm not sure if it would be very useful.
 
 ## Other ruby front matter parsers
 

@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = FrontMatterParser::VERSION
   spec.authors       = ["marc"]
   spec.email         = ["marc@lamarciana.com"]
-  spec.description   = %q{Library to parse files or strings with YAML front matters with syntax autodetection.}
-  spec.summary       = %q{FrontMatterParser is a library to parse files or strings with YAML front matters. When working with files, it can automatically detect the syntax of a file from its extension and it supposes that the front matter is marked as that syntax comments.}
+  spec.description   = %q{Parse a front matter from syntactically correct strings or files}
+  spec.summary       = %q{Library to parse a front matter from strings or files. It allows writing syntactically correct source files, marking front matters as comments in the source file language.}
   spec.homepage      = "https://github.com/waiting-for-dev/front_matter_parser"
   spec.license       = "LGPL3"
 
