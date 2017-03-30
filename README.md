@@ -1,5 +1,10 @@
 # FrontMatterParser
 
+[![Gem Version](https://badge.fury.io/rb/front_matter_parser.svg)](https://badge.fury.io/rb/front_matter_parser)
+[![Build Status](https://travis-ci.org/waiting-for-dev/front_matter_parser.svg?branch=master)](https://travis-ci.org/waiting-for-dev/front_matter_parser)
+[![Code Climate](https://codeclimate.com/github/waiting-for-dev/front_matter_parser/badges/gpa.svg)](https://codeclimate.com/github/waiting-for-dev/front_matter_parser)
+[![Test Coverage](https://codeclimate.com/github/waiting-for-dev/front_matter_parser/badges/coverage.svg)](https://codeclimate.com/github/waiting-for-dev/front_matter_parser/coverage)
+
 FrontMatterParser is a library to parse a front matter from strings or files. It allows writing syntactically correct source files, marking front matters as comments in the source file language.
 
 ## Installation
