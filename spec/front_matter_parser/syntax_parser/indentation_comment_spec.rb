@@ -99,7 +99,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
     end
   end
 
-  context 'with space between front matter' do
+  context 'with space within front matter' do
     let(:syntax) { :slim }
     let(:string) do
       <<~eos

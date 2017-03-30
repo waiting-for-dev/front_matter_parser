@@ -140,7 +140,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
     end
   end
 
-  context 'with space between front matter' do
+  context 'with space within front matter' do
     let(:syntax) { :html }
     let(:string) do
       <<~eos
