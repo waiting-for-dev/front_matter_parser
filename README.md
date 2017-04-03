@@ -95,7 +95,7 @@ You can as well parse a string providing manually the syntax:
 
 ```ruby
 string = File.read('example.slim')
-FrontMatterParser::Parser.new(:slim).parse(string)
+FrontMatterParser::Parser.new(:slim).call(string)
 ```
 
 ### Custom parsers
@@ -117,7 +117,7 @@ slim_parser = SlimParser.new
 FrontMatterParser::Parser.parse_file('example.slim', syntax_parser: slim_parser)
 
 # For a string
-FrontMatterParser::Parser.new(slim_parser).parse(string)
+FrontMatterParser::Parser.new(slim_parser).call(string)
 ```
 
 For more complex scenarios, a parser can be anything responding to a method `call(string)` which returns a hash interface with `:front_matter` and `:content` keys, or `nil` if no front matter is found.
@@ -133,7 +133,7 @@ json_loader = ->(string) { JSON.load(string) }
 FrontMatterParser::Parser.parse_file('example.md', loader: json_loader)
 
 # For a string
-FrontMatterParser::Parser.new(:md, loader: json_loader).parse(string)
+FrontMatterParser::Parser.new(:md, loader: json_loader).call(string)
 ```
 
 ## Development
