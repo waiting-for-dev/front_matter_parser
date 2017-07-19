@@ -35,7 +35,7 @@ module FrontMatterParser
         #{start_delimiter}
         [[:space:]]*
         ---
-        (?<front_matter>.*)
+        (?<front_matter>.*?)
         ---
         [[:space:]]*
         #{end_delimiter}

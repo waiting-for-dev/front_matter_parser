@@ -36,7 +36,7 @@ module FrontMatterParser
         #{delimiter}
         [[:space:]]*
         ---
-        (?<front_matter>.*)
+        (?<front_matter>.*?)
         ---
         [[:blank:]]*$[\n\r]
         (?<content>.*)

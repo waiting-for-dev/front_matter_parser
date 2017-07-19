@@ -50,7 +50,7 @@ module FrontMatterParser
         [[:space:]]*
         #{delimiter}[[:blank:]]*
         ---
-        (?<front_matter>.*)
+        (?<front_matter>.*?)
         ^[[:blank:]]*#{delimiter}[[:blank:]]*
         ---
         [[:blank:]]*$[\n\r]

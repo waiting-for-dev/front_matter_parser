@@ -241,6 +241,24 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
     end
   end
 
+  context 'with front matter delimiter chars in the content' do
+    let(:syntax) { :md }
+    let(:string) do
+      <<~eos
+        ---
+        title: hello
+        ---
+        Content---
+      eos
+    end
+
+    it 'is not greedy' do
+      front_matter = { 'title' => 'hello' }
+
+      expect(parsed).to be_parsed_result_with(front_matter, "Content---\n")
+    end
+  end
+
   it 'returns nil if no front matter is found' do
     string = 'Content'
 
