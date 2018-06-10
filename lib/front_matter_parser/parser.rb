@@ -18,8 +18,9 @@ module FrontMatterParser
     # @param syntax_parser [Object] see {SyntaxParser}
     # @param loader [Object] see {Loader}
     # @return [Parsed] parsed front matter and content
-    def self.parse_file(pathname, syntax_parser: nil, loader: Loader::Yaml)
+    def self.parse_file(pathname, syntax_parser: nil, loader: nil)
       syntax_parser ||= syntax_from_pathname(pathname)
+      loader ||= Loader::Yaml.new
       File.open(pathname) do |file|
         new(syntax_parser, loader: loader).call(file.read)
       end
@@ -49,7 +50,7 @@ module FrontMatterParser
     #
     # @param loader [Object] Front matter loader to use. See {Loader} for
     # details.
-    def initialize(syntax_parser, loader: Loader::Yaml)
+    def initialize(syntax_parser, loader: Loader::Yaml.new)
       @syntax_parser = infer_syntax_parser(syntax_parser)
       @loader = loader
     end
