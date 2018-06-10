@@ -8,14 +8,14 @@ describe FrontMatterParser::Parser do
 
   describe '#call' do
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
         title: hello
         ---
         -->
         Content
-      eos
+      STRING
     end
 
     it 'parses using given parser' do

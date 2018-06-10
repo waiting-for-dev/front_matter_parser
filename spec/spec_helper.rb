@@ -4,9 +4,9 @@ require 'simplecov'
 
 SimpleCov.start
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'front_matter_parser'
 require 'pry-byebug'
-Dir["#{File.expand_path('../support', __FILE__)}/*.rb"].each do |file|
+Dir["#{File.expand_path('support', __dir__)}/*.rb"].each do |file|
   require file
 end

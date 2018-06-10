@@ -8,16 +8,16 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   let(:front_matter) { { 'title' => 'hello', 'author' => 'me' } }
   let(:content) { "Content\n" }
 
-  context 'coffee' do
+  context 'when syntax is coffee' do
     let(:syntax) { :coffee }
     let(:string) do
-      <<~eos
+      <<~STRING
         #---
         #title: hello
         #author: me
         #---
         Content
-        eos
+      STRING
     end
 
     it 'can parse it' do
@@ -25,16 +25,16 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
     end
   end
 
-  context 'sass' do
+  context 'when syntax is sass' do
     let(:syntax) { :sass }
     let(:string) do
-      <<~eos
+      <<~STRING
         //---
         //title: hello
         //author: me
         //---
         Content
-        eos
+      STRING
     end
 
     it 'can parse it' do
@@ -42,16 +42,16 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
     end
   end
 
-  context 'scss' do
+  context 'when syntax is scss' do
     let(:syntax) { :scss }
     let(:string) do
-      <<~eos
+      <<~STRING
         //---
         //title: hello
         //author: me
         //---
         Content
-        eos
+      STRING
     end
 
     it 'can parse it' do
@@ -62,13 +62,13 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   context 'with space before comment delimiters' do
     let(:syntax) { :coffee }
     let(:string) do
-      <<~eos
+      <<~STRING
          #---
          #title: hello
          #author: me
          #---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -79,13 +79,13 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   context 'with space between comment delimiters and front matter' do
     let(:syntax) { :coffee }
     let(:string) do
-      <<~eos
+      <<~STRING
         # ---
         # title: hello
         # author: me
         # ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -96,14 +96,14 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   context 'with space within front matter' do
     let(:syntax) { :coffee }
     let(:string) do
-      <<~eos
+      <<~STRING
         # ---
         #   title: hello
         #
         #   author: me
         # ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -114,14 +114,14 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   context 'with uncommented lines between front matter' do
     let(:syntax) { :coffee }
     let(:string) do
-      <<~eos
+      <<~STRING
         # ---
         #   title: hello
 
         #   author: me
         # ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -132,13 +132,13 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   context 'with comment delimiter in the front matter' do
     let(:syntax) { :sass }
     let(:string) do
-      <<~eos
+      <<~STRING
         //---
         //title: //hello
         //author: me
         //---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -151,13 +151,13 @@ describe FrontMatterParser::SyntaxParser::SingleLineComment do
   context 'with front matter delimiter chars in the content' do
     let(:syntax) { :sass }
     let(:string) do
-      <<~eos
+      <<~STRING
         //---
         //title: hello
         //---
         //---
         Content
-      eos
+      STRING
     end
 
     it 'is not greedy' do
