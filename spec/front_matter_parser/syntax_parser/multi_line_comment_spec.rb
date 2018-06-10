@@ -8,10 +8,10 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   let(:front_matter) { { 'title' => 'hello', 'author' => 'me' } }
   let(:content) { "Content\n" }
 
-  context 'html' do
+  context 'when syntax is html' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
         title: hello
@@ -19,7 +19,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
         -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -27,10 +27,10 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
     end
   end
 
-  context 'erb' do
+  context 'when syntax is erb' do
     let(:syntax) { :erb }
     let(:string) do
-      <<~eos
+      <<~STRING
         <%#
         ---
         title: hello
@@ -38,7 +38,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
         %>
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -46,10 +46,10 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
     end
   end
 
-  context 'liquid' do
+  context 'when syntax is liquid' do
     let(:syntax) { :liquid }
     let(:string) do
-      <<~eos
+      <<~STRING
         {% comment %}
         ---
         title: hello
@@ -57,7 +57,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
         {% endcomment %}
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -65,16 +65,16 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
     end
   end
 
-  context 'md' do
+  context 'when syntax is md' do
     let(:syntax) { :md }
     let(:string) do
-      <<~eos
+      <<~STRING
         ---
         title: hello
         author: me
         ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -85,7 +85,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with space before start comment delimiter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
 
            <!--
         ---
@@ -94,7 +94,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
         -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -105,14 +105,14 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with front matter starting in comment delimiter line' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!-- ---
         title: hello
         author: me
         ---
         -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -123,7 +123,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with space before front matter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
 
            ---
@@ -132,7 +132,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
         -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -143,7 +143,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with space within front matter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
           title: hello
@@ -152,7 +152,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
         -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -163,7 +163,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with space after front matter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
         title: hello
@@ -172,7 +172,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
 
         -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -183,7 +183,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with space before end comment delimiter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
         title: hello
@@ -191,7 +191,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
            -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -202,7 +202,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with start comment delimiter in the front matter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
         title: <!--hello
@@ -210,7 +210,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
            -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -223,7 +223,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with start and end comment delimiter in the front matter' do
     let(:syntax) { :html }
     let(:string) do
-      <<~eos
+      <<~STRING
         <!--
         ---
         title: <!--hello-->
@@ -231,7 +231,7 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
         ---
            -->
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -244,12 +244,12 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
   context 'with front matter delimiter chars in the content' do
     let(:syntax) { :md }
     let(:string) do
-      <<~eos
+      <<~STRING
         ---
         title: hello
         ---
         Content---
-      eos
+      STRING
     end
 
     it 'is not greedy' do

@@ -58,6 +58,7 @@ module FrontMatterParser
         \z
         /mx
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end

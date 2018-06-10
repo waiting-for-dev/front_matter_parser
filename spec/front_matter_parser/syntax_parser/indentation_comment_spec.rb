@@ -8,17 +8,17 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   let(:front_matter) { { 'title' => 'hello', 'author' => 'me' } }
   let(:content) { "Content\n" }
 
-  context 'slim' do
+  context 'when syntax is slim' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
         /
          ---
          title: hello
          author: me
          ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -26,17 +26,17 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
     end
   end
 
-  context 'haml' do
+  context 'when syntax is haml' do
     let(:syntax) { :haml }
     let(:string) do
-      <<~eos
+      <<~STRING
         -#
           ---
           title: hello
           author: me
           ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -47,7 +47,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   context 'with space before comment delimiter' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
 
           /
            ---
@@ -55,7 +55,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
            author: me
            ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -66,13 +66,13 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   context 'with front matter starting in comment delimiter line' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
         /---
          title: hello
          author: me
          ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -83,7 +83,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   context 'with space before front matter' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
         /
 
              ---
@@ -91,7 +91,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
           author: me
          ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -102,7 +102,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   context 'with space within front matter' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
         /
           ---
             title: hello
@@ -110,7 +110,7 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
             author: me
           ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -121,14 +121,14 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   context 'with comment delimiter in the front matter' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
         /
          ---
          title: /hello
          author: me
          ---
         Content
-      eos
+      STRING
     end
 
     it 'can parse it' do
@@ -141,14 +141,14 @@ describe FrontMatterParser::SyntaxParser::IndentationComment do
   context 'with front matter delimiter chars in the content' do
     let(:syntax) { :slim }
     let(:string) do
-      <<~eos
+      <<~STRING
         /
          ---
          title: hello
          ---
         Content
         ---
-      eos
+      STRING
     end
 
     it 'is not greedy' do
