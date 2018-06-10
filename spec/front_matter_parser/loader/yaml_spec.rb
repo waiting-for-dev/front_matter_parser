@@ -3,12 +3,21 @@
 require 'spec_helper'
 
 describe FrontMatterParser::Loader::Yaml do
-  describe '::call' do
+  describe '#call' do
     it 'loads using yaml parser' do
       string = "title: 'hello'"
 
-      expect(described_class.call(string)).to eq(
+      expect(described_class.new.call(string)).to eq(
         'title' => 'hello'
+      )
+    end
+
+    it 'loads with whitelisted classes' do
+      string = 'timestamp: 2017-10-17 00:00:00Z'
+      params = { whitelist_classes: [Time] }
+
+      expect(described_class.new(params).call(string)).to eq(
+        'timestamp' => Time.parse('2017-10-17 00:00:00Z')
       )
     end
   end
