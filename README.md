@@ -134,6 +134,14 @@ FrontMatterParser::Parser.parse_file('example.md', loader: json_loader)
 FrontMatterParser::Parser.new(:md, loader: json_loader).call(string)
 ```
 
+If you need to whitelist some class for the built-in YAML loader, you can just create a custom loader based on it and provide needed classes in a `whitelisted_classes:` param:
+
+```ruby
+loader = FrontMatterParser::Loader::Yaml.new(whitelisted_classes: [Time])
+parsed = FrontMatterParser::Parser.parse_file('example.md', loader: loader)
+puts parsed['timestamp']
+```
+
 ## Development
 
 There are docker and docker-compose files configured to create a development environment for this gem. So, if you use Docker you only need to run:
