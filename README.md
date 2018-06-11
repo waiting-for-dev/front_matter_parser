@@ -75,19 +75,17 @@ title = FrontMatterParser::Parser.parse_file('example.haml')['title'] #=> 'Hello
 
 Following there is a relation of known syntaxes and their known comment delimiters:
 
-<pre>
 | Syntax | Single line comment | Start multiline comment | End multiline comment  |
 | ------ | ------------------- | ----------------------- | ---------------------- |
 | haml   |                     | -#                      | (indentation)          |
 | slim   |                     | /                       | (indentation)          |
 | liquid |                     | {% comment %}           | {% endcomment %}       |
 | md     |                     |                         |                        |
-| html   |                     | &lt;!--                    | --&gt;                    |
-| erb    |                     | &lt;%#                     | %&gt;                     |
+| html   |                     | &lt;!--                 | --&gt;                 |
+| erb    |                     | &lt;%#                  | %&gt;                  |
 | coffee | #                   |                         |                        |
 | sass   | //                  |                         |                        |
 | scss   | //                  |                         |                        |
-</pre>
 
 ### Parsing a string
 
