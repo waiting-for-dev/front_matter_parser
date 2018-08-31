@@ -134,10 +134,10 @@ FrontMatterParser::Parser.parse_file('example.md', loader: json_loader)
 FrontMatterParser::Parser.new(:md, loader: json_loader).call(string)
 ```
 
-If you need to whitelist some class for the built-in YAML loader, you can just create a custom loader based on it and provide needed classes in a `whitelisted_classes:` param:
+If you need to whitelist some class for the built-in YAML loader, you can just create a custom loader based on it and provide needed classes in a `whitelist_classes:` param:
 
 ```ruby
-loader = FrontMatterParser::Loader::Yaml.new(whitelisted_classes: [Time])
+loader = FrontMatterParser::Loader::Yaml.new(whitelist_classes: [Time])
 parsed = FrontMatterParser::Parser.parse_file('example.md', loader: loader)
 puts parsed['timestamp']
 ```
