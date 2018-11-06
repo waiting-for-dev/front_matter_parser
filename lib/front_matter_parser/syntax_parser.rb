@@ -16,6 +16,7 @@ module FrontMatterParser
     Coffee = SingleLineComment['#']
     Sass = SingleLineComment['//']
     Scss = SingleLineComment['//']
+    Rb = SingleLineComment['#']
 
     Html = MultiLineComment['<!--', '-->']
     Erb = MultiLineComment['<%#', '%>']
