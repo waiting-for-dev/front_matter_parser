@@ -14,5 +14,7 @@ rdoc
 spec/reports
 test/tmp
 test/version_tmp
+spec/output
+!/spec/output/.keep
 tmp
 .overcommit_gems.rb.lock
