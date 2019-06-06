@@ -75,6 +75,7 @@ module FrontMatterParser
 
     def infer_syntax_parser(syntax_parser)
       return syntax_parser unless syntax_parser.is_a?(Symbol)
+
       self.class.syntax_parser_from_symbol(syntax_parser)
     end
   end
