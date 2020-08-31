@@ -75,17 +75,17 @@ title = FrontMatterParser::Parser.parse_file('example.haml')['title'] #=> 'Hello
 
 Following there is a relation of known syntaxes and their known comment delimiters:
 
-| Syntax | Single line comment | Start multiline comment | End multiline comment  |
-| ------ | ------------------- | ----------------------- | ---------------------- |
-| haml   |                     | -#                      | (indentation)          |
-| slim   |                     | /                       | (indentation)          |
-| liquid |                     | {% comment %}           | {% endcomment %}       |
-| md     |                     |                         |                        |
-| html   |                     | &lt;!--                 | --&gt;                 |
-| erb    |                     | &lt;%#                  | %&gt;                  |
-| coffee | #                   |                         |                        |
-| sass   | //                  |                         |                        |
-| scss   | //                  |                         |                        |
+| Syntax | Single line comment | Start multiline comment | End multiline comment |
+| ------ | ------------------- | ----------------------- | --------------------- |
+| haml   |                     | -#                      | (indentation)         |
+| slim   |                     | /                       | (indentation)         |
+| liquid |                     | {% comment %}           | {% endcomment %}      |
+| md     |                     |                         |                       |
+| html   |                     | &lt;!--                 | --&gt;                |
+| erb    |                     | &lt;%#                  | %&gt;                 |
+| coffee | #                   |                         |                       |
+| sass   | //                  |                         |                       |
+| scss   | //                  |                         |                       |
 
 ### Parsing a string
 
@@ -134,10 +134,10 @@ FrontMatterParser::Parser.parse_file('example.md', loader: json_loader)
 FrontMatterParser::Parser.new(:md, loader: json_loader).call(string)
 ```
 
-If you need to whitelist some class for the built-in YAML loader, you can just create a custom loader based on it and provide needed classes in a `whitelist_classes:` param:
+If you need to allow one or more classes for the built-in YAML loader, you can just create a custom loader based on it and provide needed classes in a `allowlist_classes:` param:
 
 ```ruby
-loader = FrontMatterParser::Loader::Yaml.new(whitelist_classes: [Time])
+loader = FrontMatterParser::Loader::Yaml.new(allowlist_classes: [Time])
 parsed = FrontMatterParser::Parser.parse_file('example.md', loader: loader)
 puts parsed['timestamp']
 ```
