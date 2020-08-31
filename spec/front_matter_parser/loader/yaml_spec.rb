@@ -12,9 +12,9 @@ describe FrontMatterParser::Loader::Yaml do
       )
     end
 
-    it 'loads with whitelisted classes' do
+    it 'loads with classes in allowlist' do
       string = 'timestamp: 2017-10-17 00:00:00Z'
-      params = { whitelist_classes: [Time] }
+      params = { allowlist_classes: [Time] }
 
       expect(described_class.new(**params).call(string)).to eq(
         'timestamp' => Time.parse('2017-10-17 00:00:00Z')
