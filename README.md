@@ -152,14 +152,6 @@ An then, for example:
 
 `docker-compose exec app rspec`
 
-This gem uses [overcommit](https://github.com/brigade/overcommit) to execute some code review engines. If you submit a pull request, it will be executed in the CI process. In order to set it up, you need to do:
-
-```ruby
-bundle install --gemfile=.overcommit_gems.rb
-overcommit --sign
-overcommit --run # To test if it works
-```
-
 ## Contributing
 
 1. Fork it

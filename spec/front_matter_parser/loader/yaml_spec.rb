@@ -16,7 +16,7 @@ describe FrontMatterParser::Loader::Yaml do
       string = 'timestamp: 2017-10-17 00:00:00Z'
       params = { whitelist_classes: [Time] }
 
-      expect(described_class.new(params).call(string)).to eq(
+      expect(described_class.new(**params).call(string)).to eq(
         'timestamp' => Time.parse('2017-10-17 00:00:00Z')
       )
     end
