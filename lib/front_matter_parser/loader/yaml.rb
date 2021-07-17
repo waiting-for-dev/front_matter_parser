@@ -19,7 +19,7 @@ module FrontMatterParser
       # @param string [String] front matter string representation
       # @return [Hash] front matter hash representation
       def call(string)
-        YAML.safe_load(string, allowlist_classes)
+        YAML.safe_load(string, permitted_classes: allowlist_classes)
       end
     end
   end
