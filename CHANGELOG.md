@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.1] - 2021-07-20
+- Update signature in the call to `Psych.safe_load` (see #11)
+
 ## [1.0.0] - 2020-08-31
 - Depreciate "whitelist" in favor of "allowlist" by renaming the `whitelist_classes` param to `allowlist_classes`.
 
