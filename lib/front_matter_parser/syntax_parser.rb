@@ -21,6 +21,7 @@ module FrontMatterParser
     Erb = MultiLineComment['<%#', '%>']
     Liquid = MultiLineComment['{% comment %}', '{% endcomment %}']
     Md = MultiLineComment['', '']
+    Mdx = MultiLineComment['', '']
 
     Slim = IndentationComment['/']
     Haml = IndentationComment['-#']
