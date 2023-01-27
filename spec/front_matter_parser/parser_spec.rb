@@ -69,43 +69,88 @@ describe FrontMatterParser::Parser do
       File.expand_path("../../fixtures/#{file}", __FILE__)
     end
 
-    it 'parses inferring syntax from given pathname' do
-      pathname = pathname('example.html')
+    context 'with html files' do
+      it 'parses inferring syntax from given pathname' do
+        pathname = pathname('example.html')
 
-      parsed = described_class.parse_file(
-        pathname
-      )
+        parsed = described_class.parse_file(
+          pathname
+        )
 
-      expect(parsed).to be_parsed_result_with(front_matter, content)
+        expect(parsed).to be_parsed_result_with(front_matter, content)
+      end
+
+      it 'can specify custom parser through :syntax_parser param' do
+        pathname = pathname('example')
+
+        parsed = described_class.parse_file(
+          pathname, syntax_parser: FrontMatterParser::SyntaxParser::Html.new
+        )
+
+        expect(parsed).to be_parsed_result_with(front_matter, content)
+      end
+
+      it 'can specify custom parser as symbol through :syntax_parser param' do
+        pathname = pathname('example')
+
+        parsed = described_class.parse_file(
+          pathname, syntax_parser: :html
+        )
+
+        expect(parsed).to be_parsed_result_with(front_matter, content)
+      end
+
+      it 'can specify custom front matter loader with loader: param' do
+        pathname = pathname('example.html')
+        front_matter = { 'a' => 'b' }
+        parsed = described_class.parse_file(pathname,
+                                            loader: ->(_string) { front_matter })
+
+        expect(parsed.front_matter).to eq(front_matter)
+      end
     end
+  
+    context 'with mdx files' do
+      let(:mdx_content){"<Content></Content>"}
 
-    it 'can specify custom parser through :syntax_parser param' do
-      pathname = pathname('example')
+      it 'parses inferring syntax from given pathname' do
+        pathname = pathname('example.mdx')
 
-      parsed = described_class.parse_file(
-        pathname, syntax_parser: FrontMatterParser::SyntaxParser::Html.new
-      )
+        parsed = described_class.parse_file(
+          pathname
+        )
 
-      expect(parsed).to be_parsed_result_with(front_matter, content)
-    end
+        expect(parsed).to be_parsed_result_with(front_matter, mdx_content)
+      end
 
-    it 'can specify custom parser as symbol through :syntax_parser param' do
-      pathname = pathname('example')
+      it 'can specify custom parser through :syntax_parser param' do
+        pathname = pathname('example.mdx')
 
-      parsed = described_class.parse_file(
-        pathname, syntax_parser: :html
-      )
+        parsed = described_class.parse_file(
+          pathname, syntax_parser: FrontMatterParser::SyntaxParser::Mdx.new
+        )
 
-      expect(parsed).to be_parsed_result_with(front_matter, content)
-    end
+        expect(parsed).to be_parsed_result_with(front_matter, mdx_content)
+      end
 
-    it 'can specify custom front matter loader with loader: param' do
-      pathname = pathname('example.html')
-      front_matter = { 'a' => 'b' }
-      parsed = described_class.parse_file(pathname,
-                                          loader: ->(_string) { front_matter })
+      it 'can specify custom parser as symbol through :syntax_parser param' do
+        pathname = pathname('example.mdx')
 
-      expect(parsed.front_matter).to eq(front_matter)
+        parsed = described_class.parse_file(
+          pathname, syntax_parser: :mdx
+        )
+
+        expect(parsed).to be_parsed_result_with(front_matter, mdx_content)
+      end
+
+      it 'can specify custom front matter loader with loader: param' do
+        pathname = pathname('example.mdx')
+        front_matter = { 'a' => 'b' }
+        parsed = described_class.parse_file(pathname,
+                                            loader: ->(_string) { front_matter })
+
+        expect(parsed.front_matter).to eq(front_matter)
+      end      
     end
   end
 end
