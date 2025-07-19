@@ -259,6 +259,42 @@ describe FrontMatterParser::SyntaxParser::MultiLineComment do
     end
   end
 
+  context 'with front matter and no content' do
+    let(:syntax) { :md }
+
+    context 'and with EOF line break' do
+      let(:string) do
+        <<~STRING
+          ---
+          title: hello
+          ---
+        STRING
+      end
+
+      it 'does not recognize front matter as content' do
+        front_matter = { 'title' => 'hello' }
+
+        expect(parsed).to be_parsed_result_with(front_matter, "")
+      end
+    end
+
+    context 'and without EOF line break' do
+      let(:string) do
+      <<~STRING.chomp
+          ---
+          title: hello
+          ---
+        STRING
+      end
+
+      it 'does not recognize front matter as content' do
+        front_matter = { 'title' => 'hello' }
+
+        expect(parsed).to be_parsed_result_with(front_matter, "")
+      end
+    end
+  end
+
   it 'returns nil if no front matter is found' do
     string = 'Content'
 

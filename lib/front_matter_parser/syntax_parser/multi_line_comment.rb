@@ -39,7 +39,7 @@ module FrontMatterParser
         ---
         [[:space:]]*
         #{end_delimiter}
-        [[:blank:]]*$[\n\r]
+        [[:blank:]]*$[\n\r]?
         (?<content>.*)
         \z
         /mx
